@@ -1,0 +1,6124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cravoo - Siliguri Food Delivery</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        /* =====================================================
+           FOOD GRID
+        ===================================================== */
+
+        .food-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            width: 100%;
+        }
+
+        .food-card {
+            width: 100%;
+            min-height: 230px;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eeeeee;
+            transition: 0.25s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+        }
+
+        .food-card > img {
+            width: 320px;
+            min-width: 320px;
+            height: 230px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .food-card .food-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 28px 32px;
+        }
+
+        .food-card .food-info h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #111111;
+        }
+
+        .food-card .food-info p {
+            margin: 0 0 18px;
+            color: #777777;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .food-card .food-info strong {
+            font-size: 20px;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 18px;
+        }
+
+        .food-card .food-info button {
+            width: 180px;
+            border: none;
+            background: #ff5a1f;
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .food-card .food-info button:hover {
+            background: #e94d16;
+            transform: translateY(-2px);
+        }
+
+        .cravoo-home-hidden {
+            display: none !important;
+        }
+
+        .cravoo-food-actions {
+            display: flex;
+            justify-content: center;
+            margin: 28px 0 5px;
+        }
+
+        .cravoo-food-actions button {
+            border: none;
+            background: #ff5a1f;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .cravoo-food-actions button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+
+        /* =====================================================
+           RESTAURANT CLICK
+        ===================================================== */
+
+        .cravoo-restaurant-card-click {
+            cursor: pointer;
+        }
+
+        .cravoo-restaurant-card-click:hover {
+            transform: translateY(-4px);
+        }
+
+
+        /* =====================================================
+           RESTAURANT MENU PAGE
+        ===================================================== */
+
+        .cravoo-menu-page {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            z-index: 999999;
+            display: none;
+            overflow-y: auto;
+        }
+
+        .cravoo-menu-page.open {
+            display: block;
+        }
+
+
+        /* MENU HEADER */
+
+        .cravoo-menu-head {
+            position: sticky;
+            top: 0;
+            background: #ffffff;
+            border-bottom: 1px solid #eeeeee;
+            z-index: 10;
+            padding: 14px 5%;
+        }
+
+        .cravoo-menu-head-inner {
+            max-width: 1200px;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        /* BACK BUTTON */
+
+        .cravoo-back {
+            width: 42px;
+            height: 42px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: #f4f4f4;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+        .cravoo-back:hover {
+            background: #eeeeee;
+        }
+
+
+        /* MENU TITLE */
+
+        .cravoo-menu-title {
+            flex: 1;
+        }
+
+        .cravoo-menu-title h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .cravoo-menu-title p {
+            margin: 3px 0;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           RESTAURANT HERO
+        ===================================================== */
+
+        .cravoo-menu-hero {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 5%;
+        }
+
+        .cravoo-menu-banner {
+            height: 260px;
+
+            border-radius: 20px;
+
+            background-size: cover;
+            background-position: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .cravoo-menu-banner::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    transparent,
+                    rgba(0, 0, 0, 0.78)
+                );
+        }
+
+        .cravoo-menu-banner-info {
+            position: relative;
+
+            z-index: 1;
+
+            color: #ffffff;
+
+            padding: 28px;
+        }
+
+        .cravoo-menu-banner-info h2 {
+            font-size: 32px;
+
+            margin: 0 0 5px;
+        }
+
+        .cravoo-menu-banner-info p {
+            margin: 4px 0;
+        }
+
+
+        /* =====================================================
+           VEG / NON VEG TABS
+        ===================================================== */
+
+        .cravoo-tabs {
+            max-width: 1200px;
+
+            margin: 0 auto 24px;
+
+            padding: 0 5%;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        .cravoo-tab {
+            padding: 10px 20px;
+
+            border: 1px solid #dddddd;
+
+            background: #ffffff;
+
+            border-radius: 24px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .cravoo-tab:hover {
+            transform: translateY(-1px);
+        }
+
+        .cravoo-tab.active {
+            background: #111111;
+
+            color: #ffffff;
+
+            border-color: #111111;
+        }
+
+        .cravoo-tab.veg.active {
+            background: #168b3c;
+
+            border-color: #168b3c;
+        }
+
+        .cravoo-tab.nonveg.active {
+            background: #c62828;
+
+            border-color: #c62828;
+        }
+
+
+        /* =====================================================
+           PRODUCTS
+        ===================================================== */
+
+        .cravoo-products {
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 0 5% 70px;
+        }
+
+        .cravoo-category {
+            font-size: 22px;
+
+            margin: 32px 0 16px;
+        }
+
+        .cravoo-product-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .cravoo-product {
+            border: 1px solid #eeeeee;
+
+            border-radius: 16px;
+
+            padding: 17px;
+
+            background: #ffffff;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.05);
+
+            transition: 0.2s;
+        }
+
+        .cravoo-product:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.09);
+        }
+
+        .cravoo-product-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .cravoo-product h3 {
+            margin: 0;
+
+            font-size: 17px;
+        }
+
+        .cravoo-price {
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .cravoo-type {
+            font-size: 12px;
+
+            font-weight: 800;
+
+            margin: 8px 0;
+        }
+
+        .cravoo-type.veg {
+            color: #168b3c;
+        }
+
+        .cravoo-type.nonveg {
+            color: #c62828;
+        }
+
+        .cravoo-desc {
+            color: #777777;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
+            min-height: 40px;
+        }
+
+        .cravoo-add {
+            width: 100%;
+
+            border: none;
+
+            background: #ff5a1f;
+
+            color: #ffffff;
+
+            padding: 11px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .cravoo-add:hover {
+            opacity: 0.9;
+        }
+
+        .cravoo-empty {
+            text-align: center;
+
+            padding: 60px 10px;
+
+            color: #777777;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .food-card > img {
+                width: 280px;
+                min-width: 280px;
+            }
+
+        }
+
+        @media (max-width: 900px) {
+
+            .cravoo-product-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+            .food-card > img {
+                width: 250px;
+                min-width: 250px;
+            }
+
+            .food-card .food-info {
+                padding: 22px;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .food-card {
+                flex-direction: column;
+            }
+
+            .food-card > img {
+                width: 100%;
+                min-width: 100%;
+                height: 210px;
+            }
+
+            .food-card .food-info {
+                padding: 20px;
+            }
+
+            .food-card .food-info button {
+                width: 100%;
+            }
+
+            .cravoo-product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cravoo-menu-banner {
+                height: 210px;
+            }
+
+            .cravoo-menu-banner-info h2 {
+                font-size: 25px;
+            }
+
+            .cravoo-menu-title h1 {
+                font-size: 19px;
+            }
+
+            .cravoo-menu-head-inner {
+                gap: 8px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+
+            .cravoo-menu-title p {
+                display: none;
+            }
+
+            .cravoo-tabs {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .cravoo-products {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+        🍴
+        <span>Cravoo</span>
+    </div>
+
+
+    <nav>
+
+        <a href="#home">
+            Home
+        </a>
+
+        <a href="#categories">
+            Categories
+        </a>
+
+        <a href="#restaurants">
+            Restaurants
+        </a>
+
+        <a href="#food">
+            Food
+        </a>
+
+    </nav>
+
+
+    <div class="nav-right">
+
+        <div id="userArea">
+
+            <button
+                class="login-nav-btn"
+                onclick="openLogin()"
+            >
+                Login / Signup
+            </button>
+
+        </div>
+
+
+        <button
+            class="cart-btn"
+            onclick="openCart()"
+        >
+
+            🛒 Cart
+
+            <span id="cart-count">
+                0
+            </span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div class="hero-content">
+
+        <p class="small-title">
+            SILIGURI • FOOD • DELIVERY
+        </p>
+
+
+        <h1>
+
+            Good food.
+
+            <br>
+
+            <span>
+                Good mood.
+            </span>
+
+        </h1>
+
+
+        <p class="hero-text">
+
+            Order your favourite food from
+            popular restaurants in Siliguri
+            and get it delivered to your doorstep.
+
+        </p>
+
+
+        <div class="search-box">
+
+            <span>
+                🔍
+            </span>
+
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Search pizza, burger, biryani..."
+                onkeyup="searchFood()"
+            >
+
+
+            <button onclick="searchFood()">
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-food">
+
+        <div class="food-circle">
+
+            <img
+                src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=700&q=80"
+                alt="Pizza"
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
+
+<section
+    class="section"
+    id="categories"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <p class="section-small">
+                EXPLORE
+            </p>
+
+            <h2>
+                What are you craving?
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="categories">
+
+
+        <button
+            class="category active"
+            onclick="filterCategory('all', this)"
+        >
+
+            <span>
+                🍽️
+            </span>
+
+            <p>
+                All
+            </p>
+
+        </button>
+
+
+        <button
+            class="category"
+            onclick="filterCategory('pizza', this)"
+        >
+
+            <span>
+                🍕
+            </span>
+
+            <p>
+                Pizza
+            </p>
+
+        </button>
+
+
+        <button
+            class="category"
+            onclick="filterCategory('burger', this)"
+        >
+
+            <span>
+                🍔
+            </span>
+
+            <p>
+                Burgers
+            </p>
+
+        </button>
+
+
+        <button
+            class="category"
+            onclick="filterCategory('biryani', this)"
+        >
+
+            <span>
+                🍛
+            </span>
+
+            <p>
+                Biryani
+            </p>
+
+        </button>
+
+
+        <button
+            class="category"
+            onclick="filterCategory('chinese', this)"
+        >
+
+            <span>
+                🍜
+            </span>
+
+            <p>
+                Chinese
+            </p>
+
+        </button>
+
+
+        <button
+            class="category"
+            onclick="filterCategory('dessert', this)"
+        >
+
+            <span>
+                🍰
+            </span>
+
+            <p>
+                Desserts
+            </p>
+
+        </button>
+
+
+        <button
+            class="category"
+            onclick="filterCategory('drinks', this)"
+        >
+
+            <span>
+                🥤
+            </span>
+
+            <p>
+                Drinks
+            </p>
+
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     RESTAURANTS
+========================================================= -->
+
+<section
+    class="section"
+    id="restaurants"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <p class="section-small">
+                DISCOVER
+            </p>
+
+            <h2>
+                Popular restaurants in Siliguri
+            </h2>
+
+        </div>
+
+
+        <button
+            class="view-btn"
+            onclick="document.getElementById('restaurants').scrollIntoView({behavior:'smooth'})"
+        >
+            View all →
+        </button>
+
+    </div>
+
+
+    <div class="restaurants">
+
+
+        <!-- =================================================
+             KFC
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80"
+                    alt="KFC Siliguri"
+                >
+
+                <span class="offer">
+                    50% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    KFC
+                </h3>
+
+                <p class="restaurant-type">
+                    Burgers • Fast Food • Rolls & Wraps
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.3
+                    <span>•</span>
+                    15-20 min
+                </div>
+
+                <small>
+                    📍 Matigara
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             BURGER KING
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=800&q=80"
+                    alt="Burger King Siliguri"
+                >
+
+                <span class="offer">
+                    ITEMS AT ₹59
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Burger King
+                </h3>
+
+                <p class="restaurant-type">
+                    Burgers • American • Fast Food
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.3
+                    <span>•</span>
+                    20-25 min
+                </div>
+
+                <small>
+                    📍 City Centre Mall
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PIZZA HUT
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
+                    alt="Pizza Hut Siliguri"
+                >
+
+                <span class="offer">
+                    55% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Pizza Hut
+                </h3>
+
+                <p class="restaurant-type">
+                    Pizza • Beverages • Fast Food
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.5
+                    <span>•</span>
+                    30-35 min
+                </div>
+
+                <small>
+                    📍 Ujanu P
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUBWAY
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=800&q=80"
+                    alt="Subway Siliguri"
+                >
+
+                <span class="offer">
+                    20% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Subway
+                </h3>
+
+                <p class="restaurant-type">
+                    Sandwiches • Salads • Wraps
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.2
+                    <span>•</span>
+                    25-30 min
+                </div>
+
+                <small>
+                    📍 Patiram Jote
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             STARBUCKS
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+                    alt="Starbucks Siliguri"
+                >
+
+                <span class="offer">
+                    ₹50 OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Starbucks Coffee
+                </h3>
+
+                <p class="restaurant-type">
+                    Beverages • Cafe • Desserts
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.5
+                    <span>•</span>
+                    25-30 min
+                </div>
+
+                <small>
+                    📍 City Centre Mall
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             WOW MOMO
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80"
+                    alt="Wow Momo Siliguri"
+                >
+
+                <span class="offer">
+                    70% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Wow! Momo
+                </h3>
+
+                <p class="restaurant-type">
+                    Momos • Chinese • Asian
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.2
+                    <span>•</span>
+                    35-40 min
+                </div>
+
+                <small>
+                    📍 Patiram Jote
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             BASKIN ROBBINS
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=80"
+                    alt="Baskin Robbins Siliguri"
+                >
+
+                <span class="offer">
+                    ITEMS AT ₹15
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Baskin Robbins
+                </h3>
+
+                <p class="restaurant-type">
+                    Ice Cream • Desserts
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.7
+                    <span>•</span>
+                    20-25 min
+                </div>
+
+                <small>
+                    📍 Patiram Jote
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MAKHAN BHOG
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+                    alt="Makhan Bhog Siliguri"
+                >
+
+                <span class="offer">
+                    ITEMS AT ₹149
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Makhan Bhog
+                </h3>
+
+                <p class="restaurant-type">
+                    Indian • South Indian • Chinese
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.3
+                    <span>•</span>
+                    30-35 min
+                </div>
+
+                <small>
+                    📍 Patiram Jote
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             BIRYANI BY KILO
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=800&q=80"
+                    alt="Biryani By Kilo"
+                >
+
+                <span class="offer">
+                    30% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Biryani By Kilo
+                </h3>
+
+                <p class="restaurant-type">
+                    Biryani • North Indian
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.4
+                    <span>•</span>
+                    30-35 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             BARISTA
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=800&q=80"
+                    alt="Barista Coffee"
+                >
+
+                <span class="offer">
+                    ₹75 OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Barista Coffee
+                </h3>
+
+                <p class="restaurant-type">
+                    Beverages • Cafe • Desserts
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.2
+                    <span>•</span>
+                    20-25 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             WOW CHINA
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=80"
+                    alt="Wow China"
+                >
+
+                <span class="offer">
+                    40% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Wow! China
+                </h3>
+
+                <p class="restaurant-type">
+                    Chinese • Asian • Noodles
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.1
+                    <span>•</span>
+                    25-30 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             MIO AMORE
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80"
+                    alt="Mio Amore"
+                >
+
+                <span class="offer">
+                    20% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Mio Amore - The Cake Shop
+                </h3>
+
+                <p class="restaurant-type">
+                    Cakes • Desserts • Bakery
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.4
+                    <span>•</span>
+                    20-30 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             KOLKATA ALISHAN BIRYANI
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80"
+                    alt="Kolkata Alishan Biryani"
+                >
+
+                <span class="offer">
+                    25% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Kolkata Alishan Biryani
+                </h3>
+
+                <p class="restaurant-type">
+                    Biryani • Mughlai • Indian
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.3
+                    <span>•</span>
+                    25-30 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             HAJI BIRYANI
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=800&q=80"
+                    alt="Haji Biryani"
+                >
+
+                <span class="offer">
+                    30% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Haji Biryani
+                </h3>
+
+                <p class="restaurant-type">
+                    Biryani • Indian
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.2
+                    <span>•</span>
+                    25-35 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FOOD BAY
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80"
+                    alt="Food Bay"
+                >
+
+                <span class="offer">
+                    35% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Food Bay
+                </h3>
+
+                <p class="restaurant-type">
+                    Indian • Chinese • Seafood
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.1
+                    <span>•</span>
+                    25-35 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             TACO BELL
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=800&q=80"
+                    alt="Taco Bell"
+                >
+
+                <span class="offer">
+                    40% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Taco Bell
+                </h3>
+
+                <p class="restaurant-type">
+                    Mexican • Tacos • Fast Food
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.3
+                    <span>•</span>
+                    25-30 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             NEW KOLKATA HAJI BIRYANI
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=800&q=80"
+                    alt="New Kolkata Haji Biryani"
+                >
+
+                <span class="offer">
+                    25% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    New Kolkata Haji Biryani
+                </h3>
+
+                <p class="restaurant-type">
+                    Biryani • Indian • Mughlai
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.2
+                    <span>•</span>
+                    25-30 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             HOME BITE
+        ================================================= -->
+
+        <div class="restaurant-card">
+
+            <div class="restaurant-image">
+
+                <img
+                    src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"
+                    alt="Home Bite"
+                >
+
+                <span class="offer">
+                    20% OFF
+                </span>
+
+            </div>
+
+
+            <div class="restaurant-info">
+
+                <h3>
+                    Home Bite
+                </h3>
+
+                <p class="restaurant-type">
+                    Chinese • Indian • Fast Food
+                </p>
+
+                <div class="restaurant-details">
+                    ⭐ 4.0
+                    <span>•</span>
+                    25-35 min
+                </div>
+
+                <small>
+                    📍 Siliguri
+                </small>
+
+            </div>
+
+        </div>
+
+
+    
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" alt="The Original Dada Bhai Hotel Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>The Original Dada Bhai Hotel</h3>
+                <p class="restaurant-type">Bengali • Chinese • Indian</p>
+                <div class="restaurant-details">⭐ 3.6 <span>•</span> 30-40 min</div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=80" alt="Sanyal Fast Food Corner Siliguri">
+                <span class="offer">ITEMS AT ₹70</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Sanyal Fast Food Corner</h3>
+                <p class="restaurant-type">Chinese • Momos • Fast Food</p>
+                <div class="restaurant-details">⭐ 3.4 <span>•</span> 25-35 min</div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Momo Amore The Heaven Of Food Siliguri">
+                <span class="offer">30% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Momo Amore The Heaven Of Food</h3>
+                <p class="restaurant-type">Momos • Tibetan • Fast Food</p>
+                <div class="restaurant-details">⭐ 4.5 <span>•</span> 30-40 min</div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Khawarer Adda Siliguri">
+                <span class="offer">ITEMS AT ₹139</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Khawarer Adda</h3>
+                <p class="restaurant-type">Chinese • Bengali • Momos</p>
+                <div class="restaurant-details">⭐ 4.3 <span>•</span> 30-40 min</div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80" alt="Tea Villa Cafe Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Tea Villa Cafe</h3>
+                <p class="restaurant-type">Cafe • Chinese • Snacks</p>
+                <div class="restaurant-details">⭐ 4.1 <span>•</span> 25-35 min</div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80" alt="The Wok House Siliguri">
+                <span class="offer">20% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>The Wok House</h3>
+                <p class="restaurant-type">Chinese • Asian • Noodles</p>
+                <div class="restaurant-details">
+                    ⭐ 4.5 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" alt="Dona Restaurant Siliguri">
+                <span class="offer">ITEMS AT ₹99</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Dona Restaurant</h3>
+                <p class="restaurant-type">Indian • Bengali • Chinese</p>
+                <div class="restaurant-details">
+                    ⭐ 3.6 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80" alt="Icchebari Siliguri">
+                <span class="offer">15% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Icchebari</h3>
+                <p class="restaurant-type">Bengali • Indian • Fish</p>
+                <div class="restaurant-details">
+                    ⭐ 4.2 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1521305916504-4a1121188589?auto=format&fit=crop&w=800&q=80" alt="Sip N Gossip Cafe Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Sip N Gossip Cafe</h3>
+                <p class="restaurant-type">Tibetan • Cafe • Fast Food</p>
+                <div class="restaurant-details">
+                    ⭐ 4.6 <span>•</span> 20-30 min
+                </div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=800&q=80" alt="SUDHU MACHH Siliguri">
+                <span class="offer">20% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>SUDHU MACHH</h3>
+                <p class="restaurant-type">Bengali • Seafood • Fish</p>
+                <div class="restaurant-details">
+                    ⭐ 4.6 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=800&q=80" alt="Ama Ko Chula Siliguri">
+                <span class="offer">ITEMS AT ₹99</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Ama Ko Chula</h3>
+                <p class="restaurant-type">Indian • Nepali • Momos</p>
+                <div class="restaurant-details">
+                    ⭐ 4.6 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Subhas Pally</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?auto=format&fit=crop&w=800&q=80" alt="Eat And Bite Siliguri">
+                <span class="offer">ITEMS AT ₹39</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Eat And Bite</h3>
+                <p class="restaurant-type">Chinese • Rolls • Fast Food</p>
+                <div class="restaurant-details">
+                    ⭐ 3.6 <span>•</span> 25-35 min
+                </div>
+                <small>📍 College Para</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=800&q=80" alt="Rose and Rise Cafe and Restaurant Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Rose and Rise Cafe and Restaurant</h3>
+                <p class="restaurant-type">Cafe • Chinese • Snacks</p>
+                <div class="restaurant-details">
+                    ⭐ 4.0 <span>•</span> 25-35 min
+                </div>
+                <small>📍 College Para</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80" alt="Nest Coffee Lounge Siliguri">
+                <span class="offer">15% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Nest Coffee Lounge</h3>
+                <p class="restaurant-type">Cafe • Italian • Beverages</p>
+                <div class="restaurant-details">
+                    ⭐ 4.2 <span>•</span> 25-35 min
+                </div>
+                <small>📍 College Para</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=800&q=80" alt="Oh Rama Siliguri">
+                <span class="offer">20% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Oh Rama</h3>
+                <p class="restaurant-type">Cafe • Chinese • Desserts</p>
+                <div class="restaurant-details">
+                    ⭐ 4.3 <span>•</span> 30-40 min
+                </div>
+                <small>📍 Sevoke Road</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80" alt="Mamagoto Siliguri">
+                <span class="offer">15% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Mamagoto</h3>
+                <p class="restaurant-type">Asian • Chinese • Street Food</p>
+                <div class="restaurant-details">
+                    ⭐ 4.5 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=800&q=80" alt="High Street Siliguri">
+                <span class="offer">ITEMS AT ₹54</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>High Street</h3>
+                <p class="restaurant-type">Chinese • Fast Food • Rolls</p>
+                <div class="restaurant-details">
+                    ⭐ 3.2 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?auto=format&fit=crop&w=800&q=80" alt="The Tribe Siliguri">
+                <span class="offer">20% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>The Tribe</h3>
+                <p class="restaurant-type">Asian • Chinese • Continental</p>
+                <div class="restaurant-details">
+                    ⭐ 4.5 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80" alt="Bros' Backyard Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Bros' Backyard</h3>
+                <p class="restaurant-type">Cafe • Fast Food • Chinese</p>
+                <div class="restaurant-details">
+                    ⭐ 3.4 <span>•</span> 30-40 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1506354666786-959d6d497f1a?auto=format&fit=crop&w=800&q=80" alt="Gunpowder Kitchen & Cafe Siliguri">
+                <span class="offer">15% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Gunpowder Kitchen & Cafe</h3>
+                <p class="restaurant-type">South Indian • Cafe • Indian</p>
+                <div class="restaurant-details">
+                    ⭐ 4.4 <span>•</span> 30-40 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" alt="Guru Sweets & Snacks Siliguri">
+                <span class="offer">ITEMS AT ₹99</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Guru Sweets & Snacks</h3>
+                <p class="restaurant-type">Sweets • South Indian • Snacks</p>
+                <div class="restaurant-details">
+                    ⭐ 4.3 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80" alt="UBQ-Meals,Thalis & Bowls Siliguri">
+                <span class="offer">70% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>UBQ-Meals,Thalis & Bowls</h3>
+                <p class="restaurant-type">North Indian • Thalis • Biryani</p>
+                <div class="restaurant-details">
+                    ⭐ 4.3 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=800&q=80" alt="S & D Food Parlour Siliguri">
+                <span class="offer">ITEMS AT ₹99</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>S & D Food Parlour</h3>
+                <p class="restaurant-type">Punjabi • North Indian • Thalis</p>
+                <div class="restaurant-details">
+                    ⭐ 4.0 <span>•</span> 30-40 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80" alt="Goila Butter Chicken Siliguri">
+                <span class="offer">ITEMS AT ₹149</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Goila Butter Chicken</h3>
+                <p class="restaurant-type">North Indian • Punjabi • Chicken</p>
+                <div class="restaurant-details">
+                    ⭐ 4.2 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=800&q=80" alt="The Basiil Siliguri">
+                <span class="offer">₹300 OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>The Basiil</h3>
+                <p class="restaurant-type">North Indian • Chinese • Indian</p>
+                <div class="restaurant-details">
+                    ⭐ 4.1 <span>•</span> 30-40 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?auto=format&fit=crop&w=800&q=80" alt="Burger Singh(Big Punjabi Burgers) Siliguri">
+                <span class="offer">50% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Burger Singh(Big Punjabi Burgers)</h3>
+                <p class="restaurant-type">Burgers • Fast Food • Punjabi</p>
+                <div class="restaurant-details">
+                    ⭐ 4.0 <span>•</span> 25-35 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" alt="Hotel Central Plaza Siliguri">
+                <span class="offer">70% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Hotel Central Plaza</h3>
+                <p class="restaurant-type">North Indian • Chinese • Biryani</p>
+                <div class="restaurant-details">
+                    ⭐ 4.3 <span>•</span> 40-50 min
+                </div>
+                <small>📍 Pradhan Nagar</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80" alt="Jagat Hotel Siliguri">
+                <span class="offer">ITEMS AT ₹79</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Jagat Hotel</h3>
+                <p class="restaurant-type">Indian • Biryani • Chinese</p>
+                <div class="restaurant-details">
+                    ⭐ 3.8 <span>•</span> 40-50 min
+                </div>
+                <small>📍 Hill Cart Road</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Saffron -The Loft Hotel Siliguri">
+                <span class="offer">70% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Saffron -The Loft Hotel</h3>
+                <p class="restaurant-type">North Indian • Chinese • Biryani</p>
+                <div class="restaurant-details">
+                    ⭐ 4.4 <span>•</span> 40-50 min
+                </div>
+                <small>📍 Pradhan Nagar</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80" alt="Siliguri Kitchen - Courtyard By Marriott Hotel Siliguri">
+                <span class="offer">ITEMS AT ₹135</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Siliguri Kitchen - Courtyard By Marriott Hotel</h3>
+                <p class="restaurant-type">Indian • Continental • Biryani</p>
+                <div class="restaurant-details">
+                    ⭐ 4.5 <span>•</span> 45-55 min
+                </div>
+                <small>📍 Janta Nagar</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80" alt="Confection & Connection Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Confection & Connection</h3>
+                <p class="restaurant-type">Bakery • Beverages • Desserts</p>
+                <div class="restaurant-details">
+                    ⭐ 4.6 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Pradhan Nagar</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=800&q=80" alt="Anmol Rasoi Siliguri">
+                <span class="offer">ITEMS AT ₹59</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Anmol Rasoi</h3>
+                <p class="restaurant-type">North Indian • Snacks • South Indian</p>
+                <div class="restaurant-details">
+                    ⭐ 4.3 <span>•</span> 40-50 min
+                </div>
+                <small>📍 Siliguri</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="Mama Mia Siliguri">
+                <span class="offer">15% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Mama Mia</h3>
+                <p class="restaurant-type">Chinese • Italian-American • Burgers</p>
+                <div class="restaurant-details">
+                    ⭐ 4.7 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Janta Nagar</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=800&q=80" alt="FoodGully by Sarovar Siliguri">
+                <span class="offer">70% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>FoodGully by Sarovar</h3>
+                <p class="restaurant-type">North Indian • Asian • Bengali</p>
+                <div class="restaurant-details">
+                    ⭐ 4.4 <span>•</span> 45-55 min
+                </div>
+                <small>📍 Sevoke Road</small>
+            </div>
+        </div>
+
+<div class="restaurant-card">
+            <div class="restaurant-image">
+                <img src="https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?auto=format&fit=crop&w=800&q=80" alt="Nukkad Siliguri">
+                <span class="offer">10% OFF</span>
+            </div>
+            <div class="restaurant-info">
+                <h3>Nukkad</h3>
+                <p class="restaurant-type">Chinese • Biryani • Burgers • Cafe</p>
+                <div class="restaurant-details">
+                    ⭐ 3.7 <span>•</span> 35-45 min
+                </div>
+                <small>📍 Janta Nagar</small>
+            </div>
+        </div>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================================
+     RESTAURANT MENU OVERLAY
+========================================================= -->
+
+<div
+    id="cravooMenuPage"
+    class="cravoo-menu-page"
+>
+
+
+    <!-- MENU HEADER -->
+
+    <div class="cravoo-menu-head">
+
+        <div class="cravoo-menu-head-inner">
+
+
+            <button
+                class="cravoo-back"
+                id="cravooBack"
+            >
+                ←
+            </button>
+
+
+            <div class="cravoo-menu-title">
+
+                <h1 id="cravooMenuName">
+                    Restaurant
+                </h1>
+
+                <p id="cravooMenuMeta">
+                    Fresh food • Fast delivery
+                </p>
+
+            </div>
+
+
+            <button
+                class="cart-btn"
+                id="cravooMenuCart"
+            >
+
+                🛒 Cart
+
+                <span id="restaurant-cart-count">
+                    0
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- MENU BANNER -->
+
+    <div class="cravoo-menu-hero">
+
+        <div
+            class="cravoo-menu-banner"
+            id="cravooBanner"
+        >
+
+            <div class="cravoo-menu-banner-info">
+
+                <h2 id="cravooBannerName">
+                    Restaurant
+                </h2>
+
+                <p id="cravooBannerType">
+                    Delicious food
+                </p>
+
+                <p>
+                    🚴 Fast delivery •
+                    🍽️ Freshly prepared
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- VEG / NON VEG -->
+
+    <div class="cravoo-tabs">
+
+        <button
+            class="cravoo-tab active"
+            data-filter="all"
+        >
+            🍽️ All
+        </button>
+
+
+        <button
+            class="cravoo-tab veg"
+            data-filter="veg"
+        >
+            🟢 Veg
+        </button>
+
+
+        <button
+            class="cravoo-tab nonveg"
+            data-filter="nonveg"
+        >
+            🔴 Non-Veg
+        </button>
+
+    </div>
+
+
+
+    <!-- PRODUCTS -->
+
+    <div
+        class="cravoo-products"
+        id="cravooProducts"
+    ></div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     EXISTING JAVASCRIPT
+========================================================= -->
+
+<script src="script.js"></script>
+
+<style>
+/* =====================================================
+   CRAVOO LOGIN + CART FIX
+   ===================================================== */
+.cravoo-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:1000000;padding:20px}
+.cravoo-overlay.open{display:flex}
+.cravoo-modal{width:min(430px,100%);background:#fff;border-radius:22px;padding:28px;box-shadow:0 25px 80px rgba(0,0,0,.25);position:relative;animation:cravooPop .18s ease}
+@keyframes cravooPop{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+.cravoo-close{position:absolute;right:15px;top:12px;width:38px;height:38px;border:0;border-radius:50%;background:#f3f3f3;font-size:22px;cursor:pointer}
+.cravoo-modal h2{margin:0 0 7px;font-size:27px}
+.cravoo-modal-sub{margin:0 0 22px;color:#777;font-size:14px}
+.cravoo-form-group{margin-bottom:15px}
+.cravoo-form-group label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.cravoo-form-group input{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #ddd;border-radius:10px;outline:none;font:inherit}
+.cravoo-form-group input:focus{border-color:#ff5a1f;box-shadow:0 0 0 3px rgba(255,90,31,.1)}
+.cravoo-primary{width:100%;border:0;border-radius:10px;padding:13px;background:#ff5a1f;color:#fff;font-weight:800;font-size:15px;cursor:pointer}
+.cravoo-primary:hover{background:#e94d16}
+.cravoo-switch{text-align:center;margin:17px 0 0;font-size:13px;color:#777}
+.cravoo-switch button{border:0;background:none;color:#ff5a1f;font-weight:800;cursor:pointer;padding:0}
+.cravoo-user-msg{min-height:18px;margin:8px 0 0;font-size:13px;font-weight:600;color:#c62828}
+.cravoo-cart-modal{width:min(650px,100%);max-height:min(80vh,700px);display:flex;flex-direction:column}
+.cravoo-cart-body{overflow:auto;margin:5px -5px 10px;padding:0 5px}
+.cravoo-cart-item{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #eee}
+.cravoo-cart-item-info{flex:1;min-width:0}
+.cravoo-cart-item-info strong{display:block;font-size:15px}
+.cravoo-cart-item-info span{display:block;color:#777;font-size:13px;margin-top:4px}
+.cravoo-qty{display:flex;align-items:center;gap:9px}
+.cravoo-qty button{width:31px;height:31px;border:1px solid #ddd;background:#fff;border-radius:8px;cursor:pointer;font-size:17px;font-weight:700}
+.cravoo-remove{border:0;background:none;color:#c62828;cursor:pointer;font-size:12px;font-weight:700}
+.cravoo-cart-total{display:flex;justify-content:space-between;border-top:2px solid #eee;padding-top:16px;margin-top:auto;font-size:18px;font-weight:800}
+.cravoo-cart-actions{display:flex;gap:10px;margin-top:15px}
+.cravoo-secondary{flex:1;border:1px solid #ddd;background:#fff;border-radius:10px;padding:12px;font-weight:700;cursor:pointer}
+.cravoo-checkout{flex:1;border:0;background:#ff5a1f;color:#fff;border-radius:10px;padding:12px;font-weight:800;cursor:pointer}
+.cravoo-empty-cart{text-align:center;padding:45px 10px;color:#777}
+.cravoo-empty-cart .icon{font-size:45px;margin-bottom:8px}
+@media(max-width:600px){.cravoo-modal{padding:23px}.cravoo-cart-item{gap:8px}.cravoo-qty{gap:5px}.cravoo-cart-actions{flex-direction:column}}
+</style>
+
+<!-- =========================================================
+     CRAVOO FUNCTION FIX: LOGIN / SIGNUP / CART
+     This is intentionally before the restaurant-menu script so
+     the menu buttons can call these global functions.
+     ========================================================= -->
+<div id="cravooLoginOverlay" class="cravoo-overlay" aria-hidden="true">
+    <div class="cravoo-modal" role="dialog" aria-modal="true" aria-labelledby="cravooAuthTitle">
+        <button class="cravoo-close" type="button" onclick="closeLogin()" aria-label="Close">×</button>
+        <h2 id="cravooAuthTitle">Welcome to Cravoo</h2>
+        <p class="cravoo-modal-sub" id="cravooAuthSub">Login to continue ordering your favourite food.</p>
+
+        <form id="cravooAuthForm">
+            <div class="cravoo-form-group" id="cravooNameGroup" style="display:none">
+                <label for="cravooName">Full name</label>
+                <input id="cravooName" type="text" autocomplete="name" placeholder="Enter your name">
+            </div>
+            <div class="cravoo-form-group">
+                <label for="cravooEmail">Email</label>
+                <input id="cravooEmail" type="email" autocomplete="email" placeholder="Enter your email" required>
+            </div>
+            <div class="cravoo-form-group">
+                <label for="cravooPassword">Password</label>
+                <input id="cravooPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required minlength="4">
+            </div>
+            <div id="cravooAuthMsg" class="cravoo-user-msg" aria-live="polite"></div>
+            <button class="cravoo-primary" id="cravooAuthSubmit" type="submit">Login</button>
+        </form>
+        <p class="cravoo-switch" id="cravooAuthSwitch">
+            New to Cravoo? <button type="button" onclick="showSignup()">Create an account</button>
+        </p>
+    </div>
+</div>
+
+<div id="cravooCartOverlay" class="cravoo-overlay" aria-hidden="true">
+    <div class="cravoo-modal cravoo-cart-modal" role="dialog" aria-modal="true" aria-labelledby="cravooCartTitle">
+        <button class="cravoo-close" type="button" onclick="closeCart()" aria-label="Close">×</button>
+        <h2 id="cravooCartTitle">Your Cart 🛒</h2>
+        <p class="cravoo-modal-sub">Review your items before checkout.</p>
+        <div id="cravooCartBody" class="cravoo-cart-body"></div>
+        <div class="cravoo-cart-total"><span>Total</span><span id="cravooCartTotal">₹0</span></div>
+        <div class="cravoo-cart-actions">
+            <button class="cravoo-secondary" type="button" onclick="clearCart()">Clear Cart</button>
+            <button class="cravoo-checkout" type="button" onclick="checkoutCart()">Proceed to Checkout</button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function(){
+    "use strict";
+
+    const CART_KEY = "cravoo_cart_v1";
+    const USER_KEY = "cravoo_user_v1";
+    const ACCOUNTS_KEY = "cravoo_accounts_v1";
+    let authMode = "login";
+
+    function readJSON(key, fallback){
+        try{
+            const raw = localStorage.getItem(key);
+            return raw ? JSON.parse(raw) : fallback;
+        }catch(e){ return fallback; }
+    }
+
+    function saveJSON(key, value){
+        try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+    }
+
+    function getCart(){
+        const cart = readJSON(CART_KEY, []);
+        return Array.isArray(cart) ? cart : [];
+    }
+
+    function saveCart(cart){
+        saveJSON(CART_KEY, cart);
+        updateCravooCartUI();
+    }
+
+    function cartCount(){
+        return getCart().reduce((sum,item)=>sum + Number(item.qty || 0),0);
+    }
+
+    function cartTotal(){
+        return getCart().reduce((sum,item)=>sum + Number(item.price || 0) * Number(item.qty || 0),0);
+    }
+
+    function updateCravooCartUI(){
+        const count = cartCount();
+        const ids = ["cart-count","restaurant-cart-count"];
+        ids.forEach(function(id){
+            const el = document.getElementById(id);
+            if(el) el.textContent = String(count);
+        });
+        const total = document.getElementById("cravooCartTotal");
+        if(total) total.textContent = "₹" + cartTotal();
+        renderCart();
+    }
+
+    function renderCart(){
+        const body = document.getElementById("cravooCartBody");
+        if(!body) return;
+        const cart = getCart();
+        if(!cart.length){
+            body.innerHTML = '<div class="cravoo-empty-cart"><div class="icon">🛒</div><strong>Your cart is empty</strong><div>Add some delicious food to get started.</div></div>';
+            return;
+        }
+        body.innerHTML = cart.map(function(item,index){
+            const safeName = String(item.name || "Item").replace(/[&<>\"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]);});
+            const price = Number(item.price || 0);
+            const qty = Number(item.qty || 1);
+            return '<div class="cravoo-cart-item">'
+                + '<div class="cravoo-cart-item-info"><strong>'+safeName+'</strong><span>₹'+price+' × '+qty+' = ₹'+(price*qty)+'</span></div>'
+                + '<div class="cravoo-qty">'
+                + '<button type="button" onclick="changeCartQty('+index+',-1)">−</button>'
+                + '<strong>'+qty+'</strong>'
+                + '<button type="button" onclick="changeCartQty('+index+',1)">+</button>'
+                + '</div>'
+                + '<button class="cravoo-remove" type="button" onclick="removeFromCart('+index+')">Remove</button>'
+                + '</div>';
+        }).join("");
+    }
+
+    window.addToCart = function(name, price){
+        const numericPrice = Number(price);
+        if(!name || !Number.isFinite(numericPrice)) return;
+        const cart = getCart();
+        const existing = cart.find(function(item){
+            return item.name === String(name) && Number(item.price) === numericPrice;
+        });
+        if(existing){ existing.qty = Number(existing.qty || 0) + 1; }
+        else { cart.push({name:String(name),price:numericPrice,qty:1}); }
+        saveCart(cart);
+        updateCravooCartUI();
+        showCartToast(String(name)+" added to cart");
+    };
+
+    window.changeCartQty = function(index,delta){
+        const cart = getCart();
+        if(!cart[index]) return;
+        cart[index].qty = Number(cart[index].qty || 1) + Number(delta);
+        if(cart[index].qty <= 0) cart.splice(index,1);
+        saveCart(cart);
+    };
+
+    window.removeFromCart = function(index){
+        const cart = getCart();
+        if(!cart[index]) return;
+        cart.splice(index,1);
+        saveCart(cart);
+    };
+
+    window.clearCart = function(){
+        if(!getCart().length) return;
+        if(confirm("Clear all items from your cart?")) saveCart([]);
+    };
+
+    window.openCart = function(){
+        const overlay = document.getElementById("cravooCartOverlay");
+        if(!overlay) return;
+        renderCart();
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+    };
+
+    window.closeCart = function(){
+        const overlay = document.getElementById("cravooCartOverlay");
+        if(!overlay) return;
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden","true");
+        restoreBodyScroll();
+    };
+
+    window.checkoutCart = function(){
+        const cart = getCart();
+        if(!cart.length){ alert("Your cart is empty. Add some food first."); return; }
+        const user = readJSON(USER_KEY,null);
+        if(!user){
+            closeCart();
+            openLogin();
+            setTimeout(function(){
+                const msg=document.getElementById("cravooAuthMsg");
+                if(msg) msg.textContent="Please login or create an account before checkout.";
+            },50);
+            return;
+        }
+        alert("Order placed successfully! This demo checkout does not process real payments.");
+        saveCart([]);
+        closeCart();
+    };
+
+    function setAuthMode(mode){
+        authMode=mode;
+        const title=document.getElementById("cravooAuthTitle");
+        const sub=document.getElementById("cravooAuthSub");
+        const nameGroup=document.getElementById("cravooNameGroup");
+        const nameInput=document.getElementById("cravooName");
+        const submit=document.getElementById("cravooAuthSubmit");
+        const switchEl=document.getElementById("cravooAuthSwitch");
+        const password=document.getElementById("cravooPassword");
+        const msg=document.getElementById("cravooAuthMsg");
+        if(mode==="signup"){
+            title.textContent="Create your Cravoo account";
+            sub.textContent="Sign up to save your details and order faster.";
+            nameGroup.style.display="block";
+            nameInput.required=true;
+            submit.textContent="Create Account";
+            switchEl.innerHTML='Already have an account? <button type="button" onclick="showLogin()">Login</button>';
+            password.autocomplete="new-password";
+        }else{
+            title.textContent="Welcome back to Cravoo";
+            sub.textContent="Login to continue ordering your favourite food.";
+            nameGroup.style.display="none";
+            nameInput.required=false;
+            submit.textContent="Login";
+            switchEl.innerHTML='New to Cravoo? <button type="button" onclick="showSignup()">Create an account</button>';
+            password.autocomplete="current-password";
+        }
+        if(msg) msg.textContent="";
+    }
+
+    window.openLogin = function(){
+        const overlay=document.getElementById("cravooLoginOverlay");
+        if(!overlay) return;
+        const user=readJSON(USER_KEY,null);
+        if(user){
+            const name=user.name || user.email || "User";
+            if(confirm("You are logged in as " + name + ". Do you want to log out?")){
+                localStorage.removeItem(USER_KEY);
+                updateUserArea();
+            }
+            return;
+        }
+        setAuthMode("login");
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden","false");
+        document.body.style.overflow="hidden";
+        setTimeout(function(){document.getElementById("cravooEmail").focus();},50);
+    };
+
+    window.closeLogin = function(){
+        const overlay=document.getElementById("cravooLoginOverlay");
+        if(!overlay) return;
+        overlay.classList.remove("open");
+        overlay.setAttribute("aria-hidden","true");
+        const form=document.getElementById("cravooAuthForm");
+        if(form) form.reset();
+        restoreBodyScroll();
+    };
+
+    window.showSignup=function(){
+        setAuthMode("signup");
+        const overlay=document.getElementById("cravooLoginOverlay");
+        overlay.classList.add("open");
+        overlay.setAttribute("aria-hidden","false");
+        document.body.style.overflow="hidden";
+    };
+
+    window.showLogin=function(){ setAuthMode("login"); };
+
+    function updateUserArea(){
+        const area=document.getElementById("userArea");
+        if(!area) return;
+        const user=readJSON(USER_KEY,null);
+        if(user){
+            const display=String(user.name || user.email || "User").replace(/[&<>\"]/g,function(c){return ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]);});
+            area.innerHTML='<button class="login-nav-btn" type="button" onclick="openLogin()">👤 '+display+'</button>';
+        }else{
+            area.innerHTML='<button class="login-nav-btn" type="button" onclick="openLogin()">Login / Signup</button>';
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded",function(){
+        const form=document.getElementById("cravooAuthForm");
+        if(form){
+            form.addEventListener("submit",function(event){
+                event.preventDefault();
+                const name=document.getElementById("cravooName").value.trim();
+                const email=document.getElementById("cravooEmail").value.trim().toLowerCase();
+                const password=document.getElementById("cravooPassword").value;
+                const msg=document.getElementById("cravooAuthMsg");
+                if(!email || !password || (authMode==="signup" && !name)){
+                    msg.textContent="Please fill in all required fields.";
+                    return;
+                }
+                if(password.length<4){ msg.textContent="Password must be at least 4 characters."; return; }
+                const accounts=readJSON(ACCOUNTS_KEY,{});
+                if(authMode==="signup"){
+                    if(accounts[email]){ msg.textContent="An account with this email already exists. Please login."; return; }
+                    accounts[email]={name:name,email:email,password:password};
+                    saveJSON(ACCOUNTS_KEY,accounts);
+                    saveJSON(USER_KEY,{name:name,email:email});
+                    closeLogin();
+                    updateUserArea();
+                    alert("Account created successfully. Welcome to Cravoo, "+name+"!");
+                }else{
+                    if(!accounts[email]){ msg.textContent="No account found for this email. Please sign up first."; return; }
+                    if(accounts[email].password!==password){ msg.textContent="Incorrect password."; return; }
+                    saveJSON(USER_KEY,{name:accounts[email].name,email:email});
+                    closeLogin();
+                    updateUserArea();
+                    alert("Login successful. Welcome back, "+accounts[email].name+"!");
+                }
+            });
+        }
+
+        ["cravooLoginOverlay","cravooCartOverlay"].forEach(function(id){
+            const overlay=document.getElementById(id);
+            if(!overlay) return;
+            overlay.addEventListener("click",function(event){
+                if(event.target===overlay){
+                    if(id==="cravooLoginOverlay") closeLogin();
+                    else closeCart();
+                }
+            });
+        });
+        updateUserArea();
+        updateCravooCartUI();
+    });
+
+    document.addEventListener("keydown",function(event){
+        if(event.key!=="Escape") return;
+        const login=document.getElementById("cravooLoginOverlay");
+        const cart=document.getElementById("cravooCartOverlay");
+        if(login && login.classList.contains("open")) closeLogin();
+        if(cart && cart.classList.contains("open")) closeCart();
+    });
+
+    function restoreBodyScroll(){
+        const login=document.getElementById("cravooLoginOverlay");
+        const cart=document.getElementById("cravooCartOverlay");
+        if(!(login&&login.classList.contains("open")) && !(cart&&cart.classList.contains("open"))){
+            document.body.style.overflow="";
+        }
+    }
+
+    function showCartToast(message){
+        let toast=document.getElementById("cravooToast");
+        if(!toast){
+            toast=document.createElement("div");
+            toast.id="cravooToast";
+            toast.style.cssText="position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#111;color:#fff;padding:12px 18px;border-radius:999px;font:600 13px Poppins,Arial,sans-serif;z-index:1000001;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:opacity .2s";
+            document.body.appendChild(toast);
+        }
+        toast.textContent="✓ "+message;
+        toast.style.opacity="1";
+        clearTimeout(window.__cravooToastTimer);
+        window.__cravooToastTimer=setTimeout(function(){toast.style.opacity="0";},1600);
+    }
+
+    window.updateCartCount=updateCravooCartUI;
+})();
+</script>
+
+
+
+<!-- =========================================================
+     CRAVOO RESTAURANT MENU SYSTEM
+========================================================= -->
+
+<script>
+
+(function () {
+
+
+    /* =====================================================
+       RESTAURANT MENUS
+
+       Format:
+
+       [
+           name,
+           price,
+           veg/nonveg,
+           category,
+           description
+       ]
+    ===================================================== */
+
+
+    const menus = {
+
+
+        /* =================================================
+           KFC
+        ================================================= */
+
+        "KFC": [
+
+            [
+                "Crispy Chicken Burger",
+                149,
+                "nonveg",
+                "Burgers",
+                "Crispy chicken fillet with lettuce and signature sauce."
+            ],
+
+            [
+                "Chicken Zinger Burger",
+                189,
+                "nonveg",
+                "Burgers",
+                "Spicy crispy chicken burger with creamy mayo."
+            ],
+
+            [
+                "Veg Zinger Burger",
+                139,
+                "veg",
+                "Burgers",
+                "Crunchy vegetarian patty with fresh lettuce."
+            ],
+
+            [
+                "6 Pc Hot & Crispy Chicken",
+                399,
+                "nonveg",
+                "Chicken",
+                "Six pieces of crispy fried chicken."
+            ],
+
+            [
+                "Chicken Popcorn",
+                179,
+                "nonveg",
+                "Chicken",
+                "Bite-sized crispy chicken pieces."
+            ],
+
+            [
+                "Veg Rice Bowl",
+                149,
+                "veg",
+                "Meals",
+                "Rice bowl with vegetables and flavorful sauce."
+            ],
+
+            [
+                "Chicken Rice Bowl",
+                199,
+                "nonveg",
+                "Meals",
+                "Chicken pieces served with seasoned rice."
+            ],
+
+            [
+                "KFC Chicken Bucket",
+                599,
+                "nonveg",
+                "Buckets & Meals",
+                "Family bucket with crispy chicken pieces."
+            ],
+
+            [
+                "Family Feast Bucket",
+                799,
+                "nonveg",
+                "Buckets & Meals",
+                "Large bucket perfect for sharing with family."
+            ],
+
+            [
+                "Pepsi",
+                69,
+                "veg",
+                "Drinks",
+                "Chilled refreshing Pepsi."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           BURGER KING
+        ================================================= */
+
+        "Burger King": [
+
+            [
+                "Veg Whopper",
+                149,
+                "veg",
+                "Burgers",
+                "Classic Whopper-style vegetarian burger."
+            ],
+
+            [
+                "Chicken Whopper",
+                199,
+                "nonveg",
+                "Burgers",
+                "Juicy chicken patty with fresh vegetables."
+            ],
+
+            [
+                "Double Cheese Burger",
+                189,
+                "veg",
+                "Burgers",
+                "Double cheese loaded burger."
+            ],
+
+            [
+                "Crispy Chicken Burger",
+                169,
+                "nonveg",
+                "Burgers",
+                "Crunchy chicken patty with creamy sauce."
+            ],
+
+            [
+                "Paneer King Burger",
+                159,
+                "veg",
+                "Burgers",
+                "Spicy paneer patty with cheese."
+            ],
+
+            [
+                "Veg Meal",
+                249,
+                "veg",
+                "Meals",
+                "Burger, fries and chilled beverage."
+            ],
+
+            [
+                "Chicken Meal",
+                299,
+                "nonveg",
+                "Meals",
+                "Chicken burger, fries and beverage."
+            ],
+
+            [
+                "Family Burger Combo",
+                599,
+                "veg",
+                "Meals",
+                "Multiple burgers, fries and drinks for sharing."
+            ],
+
+            [
+                "French Fries",
+                99,
+                "veg",
+                "Sides",
+                "Golden crispy French fries."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           PIZZA HUT
+        ================================================= */
+
+        "Pizza Hut": [
+
+            [
+                "Margherita Pizza",
+                249,
+                "veg",
+                "Pizza",
+                "Classic tomato and mozzarella pizza."
+            ],
+
+            [
+                "Veggie Paradise Pizza",
+                299,
+                "veg",
+                "Pizza",
+                "Loaded with fresh vegetables and cheese."
+            ],
+
+            [
+                "Farmhouse Pizza",
+                329,
+                "veg",
+                "Pizza",
+                "Farm fresh vegetables with extra cheese."
+            ],
+
+            [
+                "Chicken Pepperoni Pizza",
+                349,
+                "nonveg",
+                "Pizza",
+                "Chicken pepperoni with mozzarella."
+            ],
+
+            [
+                "BBQ Chicken Pizza",
+                379,
+                "nonveg",
+                "Pizza",
+                "Smoky BBQ chicken with onions."
+            ],
+
+            [
+                "Chicken Tikka Pizza",
+                359,
+                "nonveg",
+                "Pizza",
+                "Indian-style chicken tikka pizza."
+            ],
+
+            [
+                "Garlic Bread",
+                129,
+                "veg",
+                "Sides",
+                "Soft garlic bread with herbs."
+            ],
+
+            [
+                "Cheesy Garlic Bread",
+                179,
+                "veg",
+                "Sides",
+                "Garlic bread loaded with cheese."
+            ],
+
+            [
+                "Veg Pizza Meal",
+                399,
+                "veg",
+                "Meals",
+                "Medium veg pizza with garlic bread and drink."
+            ],
+
+            [
+                "Chicken Pizza Meal",
+                449,
+                "nonveg",
+                "Meals",
+                "Chicken pizza with garlic bread and drink."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           SUBWAY
+        ================================================= */
+
+        "Subway": [
+
+            [
+                "Veggie Delite Sub",
+                149,
+                "veg",
+                "Subs",
+                "Fresh vegetables with signature sauces."
+            ],
+
+            [
+                "Paneer Tikka Sub",
+                189,
+                "veg",
+                "Subs",
+                "Spicy paneer tikka with fresh vegetables."
+            ],
+
+            [
+                "Chicken Teriyaki Sub",
+                229,
+                "nonveg",
+                "Subs",
+                "Chicken teriyaki with vegetables."
+            ],
+
+            [
+                "Chicken Seekh Sub",
+                239,
+                "nonveg",
+                "Subs",
+                "Chicken seekh with sauces and salad."
+            ],
+
+            [
+                "Veg Salad",
+                139,
+                "veg",
+                "Salads",
+                "Fresh crunchy vegetable salad."
+            ],
+
+            [
+                "Chicken Salad",
+                189,
+                "nonveg",
+                "Salads",
+                "Fresh salad topped with chicken."
+            ],
+
+            [
+                "Veg Meal Combo",
+                279,
+                "veg",
+                "Meals",
+                "Veg sub with cookie and beverage."
+            ],
+
+            [
+                "Chicken Meal Combo",
+                319,
+                "nonveg",
+                "Meals",
+                "Chicken sub with cookie and beverage."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           STARBUCKS
+        ================================================= */
+
+        "Starbucks Coffee": [
+
+            [
+                "Cappuccino",
+                189,
+                "veg",
+                "Coffee",
+                "Espresso with steamed milk and foam."
+            ],
+
+            [
+                "Cafe Latte",
+                199,
+                "veg",
+                "Coffee",
+                "Smooth espresso with creamy milk."
+            ],
+
+            [
+                "Cold Coffee",
+                179,
+                "veg",
+                "Cold Beverages",
+                "Chilled creamy coffee."
+            ],
+
+            [
+                "Caramel Frappuccino",
+                299,
+                "veg",
+                "Cold Beverages",
+                "Creamy frappuccino with caramel."
+            ],
+
+            [
+                "Chocolate Cake",
+                229,
+                "veg",
+                "Desserts",
+                "Rich chocolate cake."
+            ],
+
+            [
+                "Blueberry Muffin",
+                189,
+                "veg",
+                "Desserts",
+                "Soft muffin with blueberries."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           WOW MOMO
+        ================================================= */
+
+        "Wow! Momo": [
+
+            [
+                "Veg Steam Momo",
+                149,
+                "veg",
+                "Momos",
+                "Soft steamed vegetable momos."
+            ],
+
+            [
+                "Chicken Steam Momo",
+                179,
+                "nonveg",
+                "Momos",
+                "Juicy chicken filled momos."
+            ],
+
+            [
+                "Chilli Garlic Momo",
+                169,
+                "veg",
+                "Momos",
+                "Momos tossed in chilli garlic sauce."
+            ],
+
+            [
+                "Chicken Chilli Momo",
+                199,
+                "nonveg",
+                "Momos",
+                "Chicken momos tossed with spicy chilli."
+            ],
+
+            [
+                "Veg Momo Platter",
+                249,
+                "veg",
+                "Meals",
+                "Assorted vegetarian momo platter."
+            ],
+
+            [
+                "Chicken Momo Platter",
+                299,
+                "nonveg",
+                "Meals",
+                "Assorted chicken momo platter."
+            ],
+
+            [
+                "Momo Party Box",
+                499,
+                "veg",
+                "Buckets & Meals",
+                "Large momo box for sharing."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           BASKIN ROBBINS
+        ================================================= */
+
+        "Baskin Robbins": [
+
+            [
+                "Chocolate Ice Cream",
+                99,
+                "veg",
+                "Ice Cream",
+                "Rich creamy chocolate ice cream."
+            ],
+
+            [
+                "Vanilla Ice Cream",
+                89,
+                "veg",
+                "Ice Cream",
+                "Classic smooth vanilla ice cream."
+            ],
+
+            [
+                "Strawberry Ice Cream",
+                99,
+                "veg",
+                "Ice Cream",
+                "Creamy strawberry ice cream."
+            ],
+
+            [
+                "Brownie Sundae",
+                189,
+                "veg",
+                "Desserts",
+                "Brownie with ice cream and chocolate sauce."
+            ],
+
+            [
+                "Chocolate Sundae",
+                179,
+                "veg",
+                "Desserts",
+                "Ice cream topped with chocolate."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           MAKHAN BHOG
+        ================================================= */
+
+        "Makhan Bhog": [
+
+            [
+                "Gulab Jamun",
+                89,
+                "veg",
+                "Sweets",
+                "Soft gulab jamun in sugar syrup."
+            ],
+
+            [
+                "Rasgulla",
+                79,
+                "veg",
+                "Sweets",
+                "Soft Bengali rasgulla."
+            ],
+
+            [
+                "Kaju Katli",
+                149,
+                "veg",
+                "Sweets",
+                "Premium cashew sweet."
+            ],
+
+            [
+                "Paneer Butter Masala",
+                229,
+                "veg",
+                "Main Course",
+                "Creamy paneer curry."
+            ],
+
+            [
+                "Veg Fried Rice",
+                149,
+                "veg",
+                "Chinese",
+                "Fried rice with fresh vegetables."
+            ],
+
+            [
+                "Chilli Paneer",
+                199,
+                "veg",
+                "Chinese",
+                "Paneer tossed in spicy sauce."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           BIRYANI BY KILO
+        ================================================= */
+
+        "Biryani By Kilo": [
+
+            [
+                "Hyderabadi Chicken Biryani",
+                249,
+                "nonveg",
+                "Biryani",
+                "Traditional Hyderabadi chicken biryani."
+            ],
+
+            [
+                "Mutton Biryani",
+                329,
+                "nonveg",
+                "Biryani",
+                "Tender mutton with aromatic rice."
+            ],
+
+            [
+                "Veg Biryani",
+                199,
+                "veg",
+                "Biryani",
+                "Aromatic rice with vegetables."
+            ],
+
+            [
+                "Paneer Biryani",
+                229,
+                "veg",
+                "Biryani",
+                "Biryani with soft paneer pieces."
+            ],
+
+            [
+                "Chicken Biryani Family Pack",
+                699,
+                "nonveg",
+                "Buckets & Meals",
+                "Family-size chicken biryani pack."
+            ],
+
+            [
+                "Mutton Biryani Family Pack",
+                899,
+                "nonveg",
+                "Buckets & Meals",
+                "Family-size mutton biryani pack."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           BARISTA
+        ================================================= */
+
+        "Barista Coffee": [
+
+            [
+                "Cappuccino",
+                149,
+                "veg",
+                "Coffee",
+                "Creamy cappuccino."
+            ],
+
+            [
+                "Cafe Latte",
+                159,
+                "veg",
+                "Coffee",
+                "Smooth espresso and milk."
+            ],
+
+            [
+                "Cold Coffee",
+                169,
+                "veg",
+                "Cold Beverages",
+                "Chilled creamy coffee."
+            ],
+
+            [
+                "Chocolate Shake",
+                199,
+                "veg",
+                "Cold Beverages",
+                "Thick chocolate milkshake."
+            ],
+
+            [
+                "Chocolate Brownie",
+                129,
+                "veg",
+                "Desserts",
+                "Soft chocolate brownie."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           WOW CHINA
+        ================================================= */
+
+        "Wow! China": [
+
+            [
+                "Vegetable Fried Rice",
+                149,
+                "veg",
+                "Rice & Noodles",
+                "Fried rice with fresh vegetables."
+            ],
+
+            [
+                "Chicken Fried Rice",
+                189,
+                "nonveg",
+                "Rice & Noodles",
+                "Fried rice with tender chicken."
+            ],
+
+            [
+                "Chilli Garlic Noodles",
+                159,
+                "veg",
+                "Rice & Noodles",
+                "Spicy chilli garlic noodles."
+            ],
+
+            [
+                "Chicken Chowmein",
+                199,
+                "nonveg",
+                "Rice & Noodles",
+                "Chicken chowmein with vegetables."
+            ],
+
+            [
+                "Chilli Paneer",
+                189,
+                "veg",
+                "Starters",
+                "Crispy paneer in spicy sauce."
+            ],
+
+            [
+                "Chilli Chicken",
+                229,
+                "nonveg",
+                "Starters",
+                "Crispy chicken with chilli sauce."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           MIO AMORE
+        ================================================= */
+
+        "Mio Amore - The Cake Shop": [
+
+            [
+                "Chocolate Cake",
+                159,
+                "veg",
+                "Cakes",
+                "Rich chocolate cream cake."
+            ],
+
+            [
+                "Black Forest Cake",
+                179,
+                "veg",
+                "Cakes",
+                "Classic black forest cake."
+            ],
+
+            [
+                "Strawberry Cheesecake",
+                199,
+                "veg",
+                "Cakes",
+                "Creamy strawberry cheesecake."
+            ],
+
+            [
+                "Mango Cheesecake",
+                229,
+                "veg",
+                "Cakes",
+                "Creamy cheesecake with mango."
+            ],
+
+            [
+                "Veg Puff",
+                49,
+                "veg",
+                "Snacks",
+                "Crispy vegetable puff."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           KOLKATA ALISHAN BIRYANI
+        ================================================= */
+
+        "Kolkata Alishan Biryani": [
+
+            [
+                "Chicken Biryani",
+                170,
+                "nonveg",
+                "Biryani",
+                "Kolkata-style chicken biryani."
+            ],
+
+            [
+                "Mutton Biryani",
+                240,
+                "nonveg",
+                "Biryani",
+                "Tender mutton Kolkata biryani."
+            ],
+
+            [
+                "Egg Biryani",
+                150,
+                "nonveg",
+                "Biryani",
+                "Biryani served with egg."
+            ],
+
+            [
+                "Veg Biryani",
+                140,
+                "veg",
+                "Biryani",
+                "Fragrant vegetarian biryani."
+            ],
+
+            [
+                "Chicken Biryani Family Pack",
+                599,
+                "nonveg",
+                "Buckets & Meals",
+                "Family pack of Kolkata chicken biryani."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           HAJI BIRYANI
+        ================================================= */
+
+        "Haji Biryani": [
+
+            [
+                "Chicken Biryani",
+                160,
+                "nonveg",
+                "Biryani",
+                "Aromatic chicken biryani."
+            ],
+
+            [
+                "Mutton Biryani",
+                220,
+                "nonveg",
+                "Biryani",
+                "Tender mutton biryani."
+            ],
+
+            [
+                "Egg Biryani",
+                139,
+                "nonveg",
+                "Biryani",
+                "Egg biryani with fragrant rice."
+            ],
+
+            [
+                "Veg Biryani",
+                129,
+                "veg",
+                "Biryani",
+                "Vegetable biryani."
+            ],
+
+            [
+                "Family Biryani Meal",
+                549,
+                "nonveg",
+                "Buckets & Meals",
+                "Large biryani meal for sharing."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           FOOD BAY
+        ================================================= */
+
+        "Food Bay": [
+
+            [
+                "Prawns Biryani",
+                280,
+                "nonveg",
+                "Biryani",
+                "Prawn biryani with fragrant rice."
+            ],
+
+            [
+                "Chicken Biryani",
+                199,
+                "nonveg",
+                "Biryani",
+                "Chicken biryani with spices."
+            ],
+
+            [
+                "Veg Biryani",
+                159,
+                "veg",
+                "Biryani",
+                "Vegetable biryani."
+            ],
+
+            [
+                "Fish Fry",
+                249,
+                "nonveg",
+                "Seafood",
+                "Crispy fried fish."
+            ],
+
+            [
+                "Chicken Noodles",
+                189,
+                "nonveg",
+                "Chinese",
+                "Stir-fried chicken noodles."
+            ],
+
+            [
+                "Veg Noodles",
+                149,
+                "veg",
+                "Chinese",
+                "Vegetable noodles."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           TACO BELL
+        ================================================= */
+
+        "Taco Bell": [
+
+            [
+                "Veg Taco",
+                99,
+                "veg",
+                "Tacos",
+                "Crunchy taco with seasoned vegetables."
+            ],
+
+            [
+                "Chicken Taco",
+                129,
+                "nonveg",
+                "Tacos",
+                "Crunchy taco filled with chicken."
+            ],
+
+            [
+                "Paneer Burrito",
+                199,
+                "veg",
+                "Burritos",
+                "Paneer burrito with Mexican sauces."
+            ],
+
+            [
+                "Chicken Burrito",
+                229,
+                "nonveg",
+                "Burritos",
+                "Chicken burrito with rice and sauces."
+            ],
+
+            [
+                "Veg Taco Meal",
+                249,
+                "veg",
+                "Meals",
+                "Tacos with fries and beverage."
+            ],
+
+            [
+                "Chicken Taco Meal",
+                299,
+                "nonveg",
+                "Meals",
+                "Chicken tacos with fries and beverage."
+            ],
+
+            [
+                "Taco Party Box",
+                499,
+                "veg",
+                "Buckets & Meals",
+                "Large taco box for sharing."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           NEW KOLKATA HAJI BIRYANI
+        ================================================= */
+
+        "New Kolkata Haji Biryani": [
+
+            [
+                "Chicken Biryani",
+                159,
+                "nonveg",
+                "Biryani",
+                "Kolkata-style chicken biryani."
+            ],
+
+            [
+                "Mutton Biryani",
+                219,
+                "nonveg",
+                "Biryani",
+                "Tender mutton with fragrant rice."
+            ],
+
+            [
+                "Egg Biryani",
+                129,
+                "nonveg",
+                "Biryani",
+                "Egg served with aromatic biryani."
+            ],
+
+            [
+                "Veg Biryani",
+                119,
+                "veg",
+                "Biryani",
+                "Vegetable biryani."
+            ],
+
+            [
+                "Chicken Family Meal",
+                499,
+                "nonveg",
+                "Buckets & Meals",
+                "Large chicken biryani family meal."
+            ]
+
+        ],
+
+
+
+        /* =================================================
+           HOME BITE
+        ================================================= */
+
+        "Home Bite": [
+
+            [
+                "Veg Chowmein",
+                139,
+                "veg",
+                "Chinese",
+                "Stir-fried vegetable noodles."
+            ],
+
+            [
+                "Chicken Chowmein",
+                179,
+                "nonveg",
+                "Chinese",
+                "Chicken noodles with vegetables."
+            ],
+
+            [
+                "Veg Fried Rice",
+                139,
+                "veg",
+                "Chinese",
+                "Vegetable fried rice."
+            ],
+
+            [
+                "Chicken Fried Rice",
+                179,
+                "nonveg",
+                "Chinese",
+                "Chicken fried rice."
+            ],
+
+            [
+                "Chilli Paneer",
+                179,
+                "veg",
+                "Starters",
+                "Crispy paneer in spicy sauce."
+            ],
+
+            [
+                "Chilli Chicken",
+                209,
+                "nonveg",
+                "Starters",
+                "Crispy chicken with chilli sauce."
+            ],
+
+            [
+                "Veg Combo Meal",
+                249,
+                "veg",
+                "Meals",
+                "Noodles, starter and beverage."
+            ],
+
+            [
+                "Chicken Combo Meal",
+                299,
+                "nonveg",
+                "Meals",
+                "Chicken noodles, starter and beverage."
+            ]
+
+        ]
+,
+
+        "The Original Dada Bhai Hotel": [
+            [
+                "Plain Rice",
+                100,
+                "veg",
+                "Rice",
+                "Fine boiled plain rice."
+            ],
+            [
+                "Fried Rice",
+                150,
+                "veg",
+                "Rice",
+                "Desi-style fried rice with vegetables."
+            ],
+            [
+                "Pulao",
+                160,
+                "veg",
+                "Rice",
+                "Fragrant Bengali-style pulao."
+            ],
+            [
+                "Chicken Kosha",
+                200,
+                "nonveg",
+                "Main Course",
+                "Bengali-style chicken kosha."
+            ],
+            [
+                "Mutton Kosha",
+                200,
+                "nonveg",
+                "Main Course",
+                "Bengali-style mutton kosha."
+            ],
+            [
+                "Paneer Masala",
+                200,
+                "veg",
+                "Main Course",
+                "Paneer in a mustard-spiced gravy."
+            ],
+            [
+                "Plain Veg Thali",
+                100,
+                "veg",
+                "Thali",
+                "Rice, dal, bhaja, seasonal vegetables and chutney."
+            ],
+            [
+                "Chicken Thali",
+                220,
+                "nonveg",
+                "Thali",
+                "Rice, dal, bhaja, vegetables and chicken kosha."
+            ],
+            [
+                "Special Non Veg Thali",
+                300,
+                "nonveg",
+                "Thali",
+                "Rice, fried rice, dal, bhaja, chicken and fish curry."
+            ]
+        ],
+
+        "Sanyal Fast Food Corner": [
+            [
+                "Veg Steam Momo (7 Pcs)",
+                70,
+                "veg",
+                "Momos",
+                "Steamed vegetable momos."
+            ],
+            [
+                "Veg Pan Fried Momo (7 Pcs)",
+                80,
+                "veg",
+                "Momos",
+                "Pan-fried vegetable momos."
+            ],
+            [
+                "Veg Deep Fried Momo (7 Pcs)",
+                80,
+                "veg",
+                "Momos",
+                "Crispy deep-fried vegetable momos."
+            ],
+            [
+                "Veg Chilli Momo (7 Pcs)",
+                120,
+                "veg",
+                "Momos",
+                "Vegetable momos tossed in chilli sauce."
+            ],
+            [
+                "Butter Fried Momo (7 Pcs)",
+                90,
+                "veg",
+                "Momos",
+                "Butter-fried momos."
+            ],
+            [
+                "Chicken Steam Momo (7 Pcs)",
+                90,
+                "nonveg",
+                "Momos",
+                "Steamed chicken momos."
+            ],
+            [
+                "Chicken Pan Fried Momo (7 Pcs)",
+                100,
+                "nonveg",
+                "Momos",
+                "Golden pan-fried chicken momos."
+            ],
+            [
+                "Chicken Chilli Momo (7 Pcs)",
+                150,
+                "nonveg",
+                "Momos",
+                "Chicken momos with chilli sauce."
+            ],
+            [
+                "Fried Rice Chilli Chicken",
+                170,
+                "nonveg",
+                "Combos",
+                "Fried rice with chilli chicken."
+            ]
+        ],
+
+        "Momo Amore The Heaven Of Food": [
+            [
+                "Non Veg Momos Combo",
+                150,
+                "nonveg",
+                "Momos",
+                "Non-veg momo combo."
+            ],
+            [
+                "Chicken Steam Momo",
+                153,
+                "nonveg",
+                "Momos",
+                "Juicy chicken momos steamed to perfection."
+            ],
+            [
+                "Chicken Popcorn",
+                251,
+                "nonveg",
+                "Snacks",
+                "Crispy seasoned chicken bites."
+            ],
+            [
+                "Alu Tikki",
+                97,
+                "veg",
+                "Snacks",
+                "Crispy potato tikki."
+            ],
+            [
+                "Veg Corn Maggi",
+                105,
+                "veg",
+                "Maggi",
+                "Corn and vegetable Maggi."
+            ],
+            [
+                "Aloo Tikki (3 Pieces)",
+                137,
+                "veg",
+                "Snacks",
+                "Crispy aloo tikki."
+            ]
+        ],
+
+        "Khawarer Adda": [
+            [
+                "Veg Chowmein",
+                139,
+                "veg",
+                "Noodles",
+                "Stir-fried vegetable chowmein."
+            ],
+            [
+                "Veg Fried Rice & Chilli Chicken Combo",
+                190,
+                "nonveg",
+                "Combos",
+                "Veg fried rice with chilli chicken."
+            ],
+            [
+                "Veg Hakka Noodles and Chilli Chicken Combo",
+                199,
+                "nonveg",
+                "Combos",
+                "Hakka noodles with chilli chicken."
+            ],
+            [
+                "Chicken Chowmin And Chicken Momo Combo",
+                199,
+                "nonveg",
+                "Combos",
+                "Chicken chowmein with chicken momos."
+            ],
+            [
+                "Veg Momos (8 Pieces)",
+                149,
+                "veg",
+                "Momo",
+                "Steamed vegetable momos."
+            ],
+            [
+                "Chicken Momos (8 Pieces)",
+                139,
+                "nonveg",
+                "Momo",
+                "Steamed chicken momos."
+            ],
+            [
+                "Chilli Momos Veg (8 Pieces)",
+                149,
+                "veg",
+                "Momo",
+                "Fried vegetable momos in chilli sauce."
+            ],
+            [
+                "Egg Chilli",
+                120,
+                "nonveg",
+                "Starters",
+                "Egg tossed in spicy chilli sauce."
+            ],
+            [
+                "Prawns Chilli",
+                259,
+                "nonveg",
+                "Starters",
+                "Prawns tossed in chilli sauce."
+            ]
+        ],
+
+        "Tea Villa Cafe": [
+            [
+                "Butter Bread Jam",
+                58,
+                "veg",
+                "Toast",
+                "Warm toast with butter and jam."
+            ],
+            [
+                "Plain Toast",
+                39,
+                "veg",
+                "Toast",
+                "Simple toasted bread."
+            ],
+            [
+                "Veg Steam Momo",
+                90,
+                "veg",
+                "Momos",
+                "Steamed vegetarian momos."
+            ],
+            [
+                "Veg Fry Momo",
+                110,
+                "veg",
+                "Momos",
+                "Crispy fried vegetable momos."
+            ],
+            [
+                "Chicken Steam Momo",
+                110,
+                "nonveg",
+                "Momos",
+                "Steamed chicken momos."
+            ],
+            [
+                "Veg Chowmein",
+                139,
+                "veg",
+                "Chinese",
+                "Stir-fried vegetable chowmein."
+            ],
+            [
+                "Chicken Biryani",
+                189,
+                "nonveg",
+                "Biryani",
+                "Aromatic chicken biryani."
+            ],
+            [
+                "Chicken Roll",
+                129,
+                "nonveg",
+                "Rolls",
+                "Chicken roll with fresh fillings."
+            ]
+        ]
+,
+
+        "The Wok House": [
+            [
+                "Veg Hakka Noodles",
+                149,
+                "veg",
+                "Noodles",
+                "Stir-fried noodles with vegetables."
+            ],
+            [
+                "Chicken Hakka Noodles",
+                189,
+                "nonveg",
+                "Noodles",
+                "Chicken tossed with hakka noodles."
+            ],
+            [
+                "Veg Fried Rice",
+                149,
+                "veg",
+                "Rice",
+                "Classic vegetable fried rice."
+            ],
+            [
+                "Chilli Chicken",
+                229,
+                "nonveg",
+                "Starters",
+                "Crispy chicken in chilli sauce."
+            ]
+        ],
+
+        "Dona Restaurant": [
+            [
+                "Veg Thali",
+                149,
+                "veg",
+                "Thali",
+                "Rice, dal, vegetables and sides."
+            ],
+            [
+                "Chicken Curry",
+                219,
+                "nonveg",
+                "Main Course",
+                "Home-style chicken curry."
+            ],
+            [
+                "Egg Curry",
+                139,
+                "nonveg",
+                "Main Course",
+                "Eggs in spiced gravy."
+            ],
+            [
+                "Chicken Fried Rice",
+                189,
+                "nonveg",
+                "Rice",
+                "Indo-Chinese chicken fried rice."
+            ]
+        ],
+
+        "Icchebari": [
+            [
+                "Bengali Fish Thali",
+                249,
+                "nonveg",
+                "Thali",
+                "Rice, dal, vegetables and fish curry."
+            ],
+            [
+                "Rui Curry",
+                179,
+                "nonveg",
+                "Fish",
+                "Bengali-style rohu curry."
+            ],
+            [
+                "Katla Curry",
+                199,
+                "nonveg",
+                "Fish",
+                "Spiced katla fish curry."
+            ],
+            [
+                "Dhokar Dalna",
+                139,
+                "veg",
+                "Main Course",
+                "Classic Bengali lentil cakes in gravy."
+            ]
+        ],
+
+        "Sip N Gossip Cafe": [
+            [
+                "Chicken Momo",
+                149,
+                "nonveg",
+                "Momos",
+                "Steamed chicken momos."
+            ],
+            [
+                "Veg Momo",
+                129,
+                "veg",
+                "Momos",
+                "Steamed vegetable momos."
+            ],
+            [
+                "Chicken Chowmein",
+                189,
+                "nonveg",
+                "Noodles",
+                "Tibetan-style chicken noodles."
+            ],
+            [
+                "French Fries",
+                99,
+                "veg",
+                "Snacks",
+                "Crispy salted fries."
+            ]
+        ],
+
+        "SUDHU MACHH": [
+            [
+                "Fish Thali",
+                299,
+                "nonveg",
+                "Thali",
+                "Rice, dal, vegetables and fish."
+            ],
+            [
+                "Prawn Malai Curry",
+                399,
+                "nonveg",
+                "Seafood",
+                "Prawns in creamy Bengali gravy."
+            ],
+            [
+                "Fish Fry",
+                199,
+                "nonveg",
+                "Starters",
+                "Crispy fish fry."
+            ],
+            [
+                "Plain Rice",
+                99,
+                "veg",
+                "Rice",
+                "Steamed white rice."
+            ]
+        ],
+
+        "Ama Ko Chula": [
+            [
+                "Chicken Momos",
+                149,
+                "nonveg",
+                "Momos",
+                "Steamed chicken momos."
+            ],
+            [
+                "Veg Momos",
+                129,
+                "veg",
+                "Momos",
+                "Steamed vegetable momos."
+            ],
+            [
+                "Chicken Thukpa",
+                199,
+                "nonveg",
+                "Soups",
+                "Warm Nepali noodle soup."
+            ],
+            [
+                "Aloo Dum",
+                119,
+                "veg",
+                "Main Course",
+                "Spiced potato curry."
+            ]
+        ],
+
+        "Eat And Bite": [
+            [
+                "Egg Roll",
+                65,
+                "nonveg",
+                "Rolls",
+                "Egg roll with spiced filling."
+            ],
+            [
+                "Chicken Roll",
+                99,
+                "nonveg",
+                "Rolls",
+                "Chicken roll with fresh fillings."
+            ],
+            [
+                "Veg Chowmein",
+                90,
+                "veg",
+                "Noodles",
+                "Vegetable chowmein."
+            ],
+            [
+                "Chicken Fried Rice",
+                179,
+                "nonveg",
+                "Rice",
+                "Chicken fried rice."
+            ]
+        ],
+
+        "Rose and Rise Cafe and Restaurant": [
+            [
+                "Veg White Sauce Pasta",
+                199,
+                "veg",
+                "Pasta",
+                "Creamy vegetable pasta."
+            ],
+            [
+                "Chicken White Sauce Pasta",
+                229,
+                "nonveg",
+                "Pasta",
+                "Creamy chicken pasta."
+            ],
+            [
+                "Veg Hakka Noodles",
+                159,
+                "veg",
+                "Chinese",
+                "Stir-fried noodles."
+            ],
+            [
+                "Salted Fries",
+                99,
+                "veg",
+                "Snacks",
+                "Crispy salted fries."
+            ]
+        ],
+
+        "Nest Coffee Lounge": [
+            [
+                "Cappuccino",
+                139,
+                "veg",
+                "Beverages",
+                "Freshly brewed cappuccino."
+            ],
+            [
+                "Cafe Mocha",
+                159,
+                "veg",
+                "Beverages",
+                "Chocolate coffee drink."
+            ],
+            [
+                "White Sauce Pasta",
+                219,
+                "veg",
+                "Pasta",
+                "Creamy white sauce pasta."
+            ],
+            [
+                "Crispy Onion Rings",
+                149,
+                "veg",
+                "Snacks",
+                "Golden crispy onion rings."
+            ]
+        ],
+
+        "Oh Rama": [
+            [
+                "Cheese Chilli Toast",
+                199,
+                "veg",
+                "Toast",
+                "Cheesy chilli toast."
+            ],
+            [
+                "Cheese Garlic Bread",
+                189,
+                "veg",
+                "Bakery",
+                "Garlic bread with cheese."
+            ],
+            [
+                "Veg Chowmein",
+                159,
+                "veg",
+                "Noodles",
+                "Street-style chowmein."
+            ],
+            [
+                "Hot Gulab Jamun With Ice Cream",
+                129,
+                "veg",
+                "Desserts",
+                "Warm gulab jamun with ice cream."
+            ]
+        ],
+
+        "Mamagoto": [
+            [
+                "Street Style Veg",
+                299,
+                "veg",
+                "Asian",
+                "Spicy street-style vegetables."
+            ],
+            [
+                "Spicy Street Style Chicken",
+                329,
+                "nonveg",
+                "Asian",
+                "Spicy street-style chicken."
+            ],
+            [
+                "Veg Noodles",
+                199,
+                "veg",
+                "Noodles",
+                "Asian vegetable noodles."
+            ],
+            [
+                "Chicken Bowl",
+                299,
+                "nonveg",
+                "Bowls",
+                "Chicken with rice and vegetables."
+            ]
+        ],
+
+        "High Street": [
+            [
+                "Chicken Maggie",
+                99,
+                "nonveg",
+                "Maggie",
+                "Chicken Maggie noodles."
+            ],
+            [
+                "Chicken Waiwai",
+                109,
+                "nonveg",
+                "Noodles",
+                "Spicy chicken Waiwai."
+            ],
+            [
+                "Schezwan Roll",
+                79,
+                "veg",
+                "Rolls",
+                "Spicy Schezwan roll."
+            ],
+            [
+                "Fried Chicken Roll",
+                109,
+                "nonveg",
+                "Rolls",
+                "Crispy fried chicken roll."
+            ]
+        ],
+
+        "The Tribe": [
+            [
+                "Chicken Sizzler",
+                399,
+                "nonveg",
+                "Sizzlers",
+                "Hot chicken sizzler."
+            ],
+            [
+                "Veg Sizzler",
+                349,
+                "veg",
+                "Sizzlers",
+                "Mixed vegetable sizzler."
+            ],
+            [
+                "Chicken Fried Rice",
+                229,
+                "nonveg",
+                "Rice",
+                "Asian chicken fried rice."
+            ],
+            [
+                "Chilli Paneer",
+                219,
+                "veg",
+                "Starters",
+                "Paneer in chilli sauce."
+            ]
+        ],
+
+        "Bros' Backyard": [
+            [
+                "Veg White Sauce Pasta",
+                199,
+                "veg",
+                "Pasta",
+                "Creamy vegetable pasta."
+            ],
+            [
+                "Chicken White Sauce Pasta",
+                229,
+                "nonveg",
+                "Pasta",
+                "Creamy chicken pasta."
+            ],
+            [
+                "Veg Hakka Noodles",
+                159,
+                "veg",
+                "Chinese",
+                "Stir-fried noodles."
+            ],
+            [
+                "Salted Fries",
+                99,
+                "veg",
+                "Snacks",
+                "Crispy salted fries."
+            ]
+        ],
+
+        "Gunpowder Kitchen & Cafe": [
+            [
+                "Veg Thali",
+                149,
+                "veg",
+                "Thali",
+                "Rice, dal, vegetables and sides."
+            ],
+            [
+                "Chicken Curry",
+                219,
+                "nonveg",
+                "Main Course",
+                "Home-style chicken curry."
+            ],
+            [
+                "Egg Curry",
+                139,
+                "nonveg",
+                "Main Course",
+                "Eggs in spiced gravy."
+            ],
+            [
+                "Chicken Fried Rice",
+                189,
+                "nonveg",
+                "Rice",
+                "Indo-Chinese chicken fried rice."
+            ]
+        ],
+
+        "Guru Sweets & Snacks": [
+            [
+                "Veg Thali",
+                149,
+                "veg",
+                "Thali",
+                "Rice, dal, vegetables and sides."
+            ],
+            [
+                "Chicken Curry",
+                219,
+                "nonveg",
+                "Main Course",
+                "Home-style chicken curry."
+            ],
+            [
+                "Egg Curry",
+                139,
+                "nonveg",
+                "Main Course",
+                "Eggs in spiced gravy."
+            ],
+            [
+                "Chicken Fried Rice",
+                189,
+                "nonveg",
+                "Rice",
+                "Indo-Chinese chicken fried rice."
+            ]
+        ],
+
+        "UBQ-Meals,Thalis & Bowls": [
+            [
+                "Punjabi Veg Thali",
+                249,
+                "veg",
+                "Thali",
+                "Punjabi-style vegetarian thali."
+            ],
+            [
+                "Punjabi Thali - Non Veg",
+                299,
+                "nonveg",
+                "Thali",
+                "Punjabi non-veg thali."
+            ],
+            [
+                "Chicken Biryani",
+                249,
+                "nonveg",
+                "Biryani",
+                "Aromatic chicken biryani."
+            ],
+            [
+                "Paneer Tikka",
+                229,
+                "veg",
+                "Starters",
+                "Tandoori paneer tikka."
+            ]
+        ],
+
+        "S & D Food Parlour": [
+            [
+                "Kadhi Pakoda",
+                199,
+                "veg",
+                "Main Course",
+                "Punjabi kadhi with pakoda."
+            ],
+            [
+                "Rajma Chawal",
+                229,
+                "veg",
+                "Rice",
+                "Rajma served with rice."
+            ],
+            [
+                "Paneer Butter Masala",
+                249,
+                "veg",
+                "Main Course",
+                "Creamy paneer gravy."
+            ],
+            [
+                "Chicken Tikka",
+                299,
+                "nonveg",
+                "Starters",
+                "Tandoori chicken tikka."
+            ]
+        ],
+
+        "Goila Butter Chicken": [
+            [
+                "Butter Chicken",
+                299,
+                "nonveg",
+                "Main Course",
+                "Creamy Punjabi butter chicken."
+            ],
+            [
+                "Chicken Tikka",
+                279,
+                "nonveg",
+                "Starters",
+                "Tandoori chicken tikka."
+            ],
+            [
+                "Dal Makhani",
+                229,
+                "veg",
+                "Main Course",
+                "Slow-cooked black lentils."
+            ],
+            [
+                "Butter Naan",
+                69,
+                "veg",
+                "Breads",
+                "Soft naan with butter."
+            ]
+        ],
+
+        "The Basiil": [
+            [
+                "Dal Tadka",
+                179,
+                "veg",
+                "Main Course",
+                "Yellow dal tempered with spices."
+            ],
+            [
+                "Paneer Butter Masala",
+                239,
+                "veg",
+                "Main Course",
+                "Paneer in creamy tomato gravy."
+            ],
+            [
+                "Chicken Curry",
+                249,
+                "nonveg",
+                "Main Course",
+                "Classic Indian chicken curry."
+            ],
+            [
+                "Veg Hakka Noodles",
+                169,
+                "veg",
+                "Chinese",
+                "Indo-Chinese vegetable noodles."
+            ]
+        ],
+
+        "Burger Singh(Big Punjabi Burgers)": [
+            [
+                "Amritsari Murgh Makhani Burger",
+                149,
+                "nonveg",
+                "Burgers",
+                "Punjabi-style chicken burger."
+            ],
+            [
+                "Potato Crunch Burger",
+                134,
+                "veg",
+                "Burgers",
+                "Crispy potato burger."
+            ],
+            [
+                "Chunky Paneer Burger",
+                209,
+                "veg",
+                "Burgers",
+                "Paneer burger with sauces."
+            ],
+            [
+                "Big Crispy Chicken Burger",
+                249,
+                "nonveg",
+                "Burgers",
+                "Crispy chicken burger."
+            ]
+        ],
+
+        "Hotel Central Plaza": [
+            [
+                "Chicken Biryani",
+                249,
+                "nonveg",
+                "Biryani",
+                "Aromatic chicken biryani."
+            ],
+            [
+                "Mutton Biryani",
+                329,
+                "nonveg",
+                "Biryani",
+                "Fragrant mutton biryani."
+            ],
+            [
+                "Chicken Kebab",
+                279,
+                "nonveg",
+                "Kebabs",
+                "Tandoori chicken kebabs."
+            ],
+            [
+                "Veg Fried Rice",
+                179,
+                "veg",
+                "Rice",
+                "Vegetable fried rice."
+            ]
+        ],
+
+        "Jagat Hotel": [
+            [
+                "Chicken Biryani",
+                229,
+                "nonveg",
+                "Biryani",
+                "Spiced chicken biryani."
+            ],
+            [
+                "Egg Biryani",
+                159,
+                "nonveg",
+                "Biryani",
+                "Aromatic egg biryani."
+            ],
+            [
+                "Chicken Chowmein",
+                189,
+                "nonveg",
+                "Chinese",
+                "Chicken chowmein."
+            ],
+            [
+                "Veg Manchurian",
+                169,
+                "veg",
+                "Chinese",
+                "Crispy veg manchurian."
+            ]
+        ],
+
+        "Saffron -The Loft Hotel": [
+            [
+                "Chicken Biryani",
+                259,
+                "nonveg",
+                "Biryani",
+                "Aromatic chicken biryani."
+            ],
+            [
+                "Mutton Biryani",
+                349,
+                "nonveg",
+                "Biryani",
+                "Fragrant mutton biryani."
+            ],
+            [
+                "Chicken Kebab",
+                299,
+                "nonveg",
+                "Kebabs",
+                "Juicy chicken kebabs."
+            ],
+            [
+                "Paneer Tikka",
+                249,
+                "veg",
+                "Starters",
+                "Tandoori paneer tikka."
+            ]
+        ],
+
+        "Siliguri Kitchen - Courtyard By Marriott Hotel": [
+            [
+                "Chicken Biryani",
+                349,
+                "nonveg",
+                "Biryani",
+                "Premium chicken biryani."
+            ],
+            [
+                "Paneer Tikka",
+                329,
+                "veg",
+                "Starters",
+                "Grilled paneer tikka."
+            ],
+            [
+                "Chicken Steak",
+                499,
+                "nonveg",
+                "Continental",
+                "Grilled chicken steak."
+            ],
+            [
+                "Veg Platter",
+                399,
+                "veg",
+                "Starters",
+                "Assorted vegetarian starters."
+            ]
+        ],
+
+        "Confection & Connection": [
+            [
+                "Chocolate Cake",
+                149,
+                "veg",
+                "Cakes",
+                "Rich chocolate cake slice."
+            ],
+            [
+                "Red Velvet Cake",
+                179,
+                "veg",
+                "Cakes",
+                "Creamy red velvet cake."
+            ],
+            [
+                "Cold Coffee",
+                149,
+                "veg",
+                "Beverages",
+                "Chilled creamy coffee."
+            ],
+            [
+                "Brownie",
+                129,
+                "veg",
+                "Desserts",
+                "Warm chocolate brownie."
+            ]
+        ],
+
+        "Anmol Rasoi": [
+            [
+                "Veg Thali",
+                199,
+                "veg",
+                "Thali",
+                "Indian vegetarian thali."
+            ],
+            [
+                "Masala Dosa",
+                159,
+                "veg",
+                "South Indian",
+                "Crispy masala dosa."
+            ],
+            [
+                "Samosa",
+                39,
+                "veg",
+                "Snacks",
+                "Crispy potato samosa."
+            ],
+            [
+                "Paneer Roll",
+                119,
+                "veg",
+                "Rolls",
+                "Paneer roll with sauces."
+            ]
+        ],
+
+        "Mama Mia": [
+            [
+                "Chicken Burger",
+                249,
+                "nonveg",
+                "Burgers",
+                "Juicy chicken burger."
+            ],
+            [
+                "Veg Pizza",
+                249,
+                "veg",
+                "Pizza",
+                "Cheesy vegetable pizza."
+            ],
+            [
+                "Chicken Pasta",
+                279,
+                "nonveg",
+                "Pasta",
+                "Creamy chicken pasta."
+            ],
+            [
+                "Chicken Fried Rice",
+                219,
+                "nonveg",
+                "Rice",
+                "Chicken fried rice."
+            ]
+        ],
+
+        "FoodGully by Sarovar": [
+            [
+                "Bengali Fish Curry",
+                279,
+                "nonveg",
+                "Main Course",
+                "Traditional fish curry."
+            ],
+            [
+                "Chicken Curry",
+                259,
+                "nonveg",
+                "Main Course",
+                "Indian chicken curry."
+            ],
+            [
+                "Veg Fried Rice",
+                179,
+                "veg",
+                "Rice",
+                "Vegetable fried rice."
+            ],
+            [
+                "Gulab Jamun",
+                99,
+                "veg",
+                "Desserts",
+                "Soft gulab jamun."
+            ]
+        ],
+
+        "Nukkad": [
+            [
+                "Chicken Biryani",
+                229,
+                "nonveg",
+                "Biryani",
+                "Aromatic chicken biryani."
+            ],
+            [
+                "Chicken Burger",
+                199,
+                "nonveg",
+                "Burgers",
+                "Classic chicken burger."
+            ],
+            [
+                "Veg Hakka Noodles",
+                159,
+                "veg",
+                "Chinese",
+                "Vegetable noodles."
+            ],
+            [
+                "Cold Coffee",
+                129,
+                "veg",
+                "Beverages",
+                "Chilled cold coffee."
+            ]
+        ]    };
+
+
+
+    /* =====================================================
+       RESTAURANT BANNER IMAGES
+    ===================================================== */
+
+
+    const images = {
+
+
+        "KFC":
+            "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Burger King":
+            "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Pizza Hut":
+            "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Subway":
+            "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Starbucks Coffee":
+            "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Wow! Momo":
+            "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Baskin Robbins":
+            "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Makhan Bhog":
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Biryani By Kilo":
+            "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Barista Coffee":
+            "https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Wow! China":
+            "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Mio Amore - The Cake Shop":
+            "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Kolkata Alishan Biryani":
+            "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Haji Biryani":
+            "https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Food Bay":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Taco Bell":
+            "https://images.unsplash.com/photo-1552332386-f8dd00dc2f85?auto=format&fit=crop&w=1200&q=80",
+
+
+        "New Kolkata Haji Biryani":
+            "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80",
+
+
+        "Home Bite":
+            "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=1200&q=80"
+,
+
+        "The Original Dada Bhai Hotel":
+            "https://lh3.googleusercontent.com/YLmbK2ODenrNTSNFUp5KNX684vxkLYx2r9ZGCS0UivdjC_GL2c87vCqWwUidPBc6im8OKPz9y8jlvKGFOoAXeSEyYoNlJEZYPaawX4Y%3Dh320-rw",
+
+        "Sanyal Fast Food Corner":
+            "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80",
+
+        "Momo Amore The Heaven Of Food":
+            "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80",
+
+        "Khawarer Adda":
+            "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=80",
+
+        "Tea Villa Cafe":
+            "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80"
+,
+
+        "The Wok House":
+            "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=80",
+
+        "Dona Restaurant":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+
+        "Icchebari":
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+
+        "Sip N Gossip Cafe":
+            "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
+
+        "SUDHU MACHH":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+
+        "Ama Ko Chula":
+            "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&w=800&q=80",
+
+        "Eat And Bite":
+            "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+
+        "Rose and Rise Cafe and Restaurant":
+            "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
+
+        "Nest Coffee Lounge":
+            "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80",
+
+        "Oh Rama":
+            "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=80",
+
+        "Mamagoto":
+            "https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=80",
+
+        "High Street":
+            "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",
+
+        "The Tribe":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+
+        "Bros' Backyard":
+            "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80",
+
+        "Gunpowder Kitchen & Cafe":
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+
+        "Guru Sweets & Snacks":
+            "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=80",
+
+        "UBQ-Meals,Thalis & Bowls":
+            "https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&w=800&q=80",
+
+        "S & D Food Parlour":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+
+        "Goila Butter Chicken":
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+
+        "The Basiil":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+
+        "Burger Singh(Big Punjabi Burgers)":
+            "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+
+        "Hotel Central Plaza":
+            "https://media.easemytrip.com/media/Hotel/SHL-1912927435248/Common/CommonYsxQxQ.jpg",
+
+        "Jagat Hotel":
+            "https://r2imghtlak.mmtcdn.com/r2-mmt-htl-image/flyfish/raw/NH75012258185492/QS1042/QS1042-Q1/Screenshot_20230429_080514_Maps.jpg",
+
+        "Saffron -The Loft Hotel":
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+
+        "Siliguri Kitchen - Courtyard By Marriott Hotel":
+            "https://cache.marriott.com/content/dam/marriott-renditions/IXBCY/ixbcy-kitchen-7628-hor-clsc.jpg?downsize=750px%3A%2A&interpolation=progressive-bilinear&output-quality=70",
+
+        "Confection & Connection":
+            "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80",
+
+        "Anmol Rasoi":
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80",
+
+        "Mama Mia":
+            "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+
+        "FoodGully by Sarovar":
+            "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80",
+
+        "Nukkad":
+            "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"    };
+
+
+
+    /* =====================================================
+       CURRENT RESTAURANT
+    ===================================================== */
+
+    let current = "";
+
+    let filter = "all";
+
+
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function esc(value) {
+
+        return String(value)
+            .replace(/[&<>"']/g, function (char) {
+
+                return {
+
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#39;"
+
+                }[char];
+
+            });
+
+    }
+
+
+
+    /* =====================================================
+       RENDER RESTAURANT MENU
+    ===================================================== */
+
+    function render() {
+
+
+        const box =
+            document.getElementById(
+                "cravooProducts"
+            );
+
+
+        if (!box) {
+            return;
+        }
+
+
+        let list =
+            (menus[current] || [])
+            .filter(function (item) {
+
+                return (
+                    filter === "all" ||
+                    item[2] === filter
+                );
+
+            });
+
+
+        /* NO ITEMS */
+
+        if (!list.length) {
+
+            box.innerHTML = `
+
+                <div class="cravoo-empty">
+
+                    <h2>
+                        No items found 😢
+                    </h2>
+
+                    <p>
+                        Try another food filter.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+
+        /* GROUP BY CATEGORY */
+
+        const groups = {};
+
+
+        list.forEach(function (item) {
+
+            const category =
+                item[3];
+
+
+            if (!groups[category]) {
+
+                groups[category] = [];
+
+            }
+
+
+            groups[category].push(item);
+
+        });
+
+
+
+        /* BUILD HTML */
+
+        box.innerHTML =
+            Object.entries(groups)
+            .map(function ([category, items]) {
+
+
+                return `
+
+                    <h2 class="cravoo-category">
+                        ${esc(category)}
+                    </h2>
+
+
+                    <div class="cravoo-product-grid">
+
+                        ${
+
+                            items
+                            .map(function (item) {
+
+                                const name =
+                                    item[0];
+
+                                const price =
+                                    item[1];
+
+                                const type =
+                                    item[2];
+
+                                const description =
+                                    item[4];
+
+
+                                return `
+
+                                    <div
+                                        class="cravoo-product"
+                                    >
+
+                                        <div
+                                            class="cravoo-product-top"
+                                        >
+
+                                            <h3>
+                                                ${esc(name)}
+                                            </h3>
+
+                                            <span
+                                                class="cravoo-price"
+                                            >
+                                                ₹${price}
+                                            </span>
+
+                                        </div>
+
+
+                                        <div
+                                            class="cravoo-type ${type}"
+                                        >
+
+                                            ${
+                                                type === "veg"
+                                                    ? "🟢 Veg"
+                                                    : "🔴 Non-Veg"
+                                            }
+
+                                        </div>
+
+
+                                        <p
+                                            class="cravoo-desc"
+                                        >
+                                            ${esc(description)}
+                                        </p>
+
+
+                                        <button
+                                            class="cravoo-add"
+                                            data-name="${esc(name)}"
+                                            data-price="${price}"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+                                    </div>
+
+                                `;
+
+                            })
+                            .join("")
+
+                        }
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+
+
+        /* ADD TO CART EVENTS */
+
+        box
+            .querySelectorAll(".cravoo-add")
+            .forEach(function (button) {
+
+
+                button.onclick =
+                    function () {
+
+
+                        const name =
+                            button.dataset.name;
+
+
+                        const price =
+                            Number(
+                                button.dataset.price
+                            );
+
+
+                        if (
+                            typeof window.addToCart ===
+                            "function"
+                        ) {
+
+                            window.addToCart(
+                                name,
+                                price
+                            );
+
+                        } else {
+
+                            alert(
+                                name +
+                                " added to cart - ₹" +
+                                price
+                            );
+
+                        }
+
+
+                        updateCartCount();
+
+                    };
+
+            });
+
+    }
+
+
+
+    /* =====================================================
+       UPDATE CART COUNT
+    ===================================================== */
+
+    function updateCartCount() {
+
+
+        const mainCart =
+            document.getElementById(
+                "cart-count"
+            );
+
+
+        const restaurantCart =
+            document.getElementById(
+                "restaurant-cart-count"
+            );
+
+
+        if (
+            mainCart &&
+            restaurantCart
+        ) {
+
+            restaurantCart.textContent =
+                mainCart.textContent || "0";
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       OPEN RESTAURANT
+    ===================================================== */
+
+    function openMenu(name) {
+
+
+        if (!menus[name]) {
+
+            alert(
+                "Menu coming soon for " +
+                name
+            );
+
+            return;
+
+        }
+
+
+        current = name;
+
+        filter = "all";
+
+
+        document.getElementById(
+            "cravooMenuName"
+        ).textContent = name;
+
+
+        document.getElementById(
+            "cravooBannerName"
+        ).textContent = name;
+
+
+        document.getElementById(
+            "cravooMenuMeta"
+        ).textContent =
+            "⭐ 4.3 • 20-40 min";
+
+
+        const categories =
+            [
+                ...new Set(
+                    menus[name]
+                    .map(function (item) {
+
+                        return item[3];
+
+                    })
+                )
+            ];
+
+
+        document.getElementById(
+            "cravooBannerType"
+        ).textContent =
+            categories.join(" • ");
+
+
+
+        /* BANNER IMAGE */
+
+        const banner =
+            document.getElementById(
+                "cravooBanner"
+            );
+
+
+        if (images[name]) {
+
+            banner.style.backgroundImage =
+                `url("${images[name]}")`;
+
+        }
+
+
+
+        /* RESET FILTER */
+
+        document
+            .querySelectorAll(".cravoo-tab")
+            .forEach(function (button, index) {
+
+                button.classList.toggle(
+                    "active",
+                    index === 0
+                );
+
+            });
+
+
+
+        render();
+
+        updateCartCount();
+
+
+
+        /* OPEN */
+
+        document
+            .getElementById(
+                "cravooMenuPage"
+            )
+            .classList.add("open");
+
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+
+    /* =====================================================
+       CLOSE RESTAURANT
+    ===================================================== */
+
+    function closeMenu() {
+
+
+        document
+            .getElementById(
+                "cravooMenuPage"
+            )
+            .classList.remove("open");
+
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+
+    /* =====================================================
+       HOME FOOD LIMIT
+    ===================================================== */
+
+    function limitHomeFood() {
+
+
+        const grid =
+            document.getElementById(
+                "foodGrid"
+            );
+
+
+        if (!grid) {
+            return;
+        }
+
+
+        const cards =
+            Array.from(
+                grid.querySelectorAll(
+                    ".food-card"
+                )
+            );
+
+
+        /* SHOW FIRST 8 */
+
+        cards.forEach(function (card, index) {
+
+            if (index >= 8) {
+
+                card.classList.add(
+                    "cravoo-home-hidden"
+                );
+
+            }
+
+        });
+
+
+        /* VIEW ALL BUTTON */
+
+        if (
+            document.getElementById(
+                "cravooViewFood"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const wrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        wrapper.className =
+            "cravoo-food-actions";
+
+
+        const button =
+            document.createElement(
+                "button"
+            );
+
+
+        button.id =
+            "cravooViewFood";
+
+
+        button.textContent =
+            "View all food →";
+
+
+        wrapper.appendChild(
+            button
+        );
+
+
+        grid.parentNode.appendChild(
+            wrapper
+        );
+
+
+        let expanded =
+            false;
+
+
+        button.onclick =
+            function () {
+
+
+                expanded =
+                    !expanded;
+
+
+                cards.forEach(
+                    function (card, index) {
+
+
+                        if (index >= 8) {
+
+                            card.classList.toggle(
+                                "cravoo-home-hidden",
+                                !expanded
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                button.textContent =
+                    expanded
+                        ? "Show less ↑"
+                        : "View all food →";
+
+            };
+
+    }
+
+
+
+    /* =====================================================
+       RESTAURANT CLICK EVENTS
+    ===================================================== */
+
+    function wireRestaurants() {
+
+
+        document
+            .querySelectorAll(
+                ".restaurant-card"
+            )
+            .forEach(function (card) {
+
+
+                const heading =
+                    card.querySelector(
+                        "h3"
+                    );
+
+
+                if (!heading) {
+                    return;
+                }
+
+
+                const name =
+                    heading.textContent.trim();
+
+
+                card.classList.add(
+                    "cravoo-restaurant-card-click"
+                );
+
+
+                card.addEventListener(
+                    "click",
+                    function (event) {
+
+
+                        if (
+                            event.target.closest(
+                                "a, button"
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        openMenu(name);
+
+                    }
+                );
+
+            });
+
+    }
+
+
+
+    /* =====================================================
+       FILTER BUTTONS
+    ===================================================== */
+
+    function setupFilters() {
+
+
+        document
+            .querySelectorAll(
+                ".cravoo-tab"
+            )
+            .forEach(function (button) {
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+
+                        filter =
+                            button.dataset.filter;
+
+
+                        document
+                            .querySelectorAll(
+                                ".cravoo-tab"
+                            )
+                            .forEach(
+                                function (btn) {
+
+                                    btn.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        render();
+
+                    }
+                );
+
+            });
+
+    }
+
+
+
+    /* =====================================================
+       BACK BUTTON
+    ===================================================== */
+
+    document
+        .getElementById(
+            "cravooBack"
+        )
+        .addEventListener(
+            "click",
+            closeMenu
+        );
+
+
+
+    /* =====================================================
+       CART BUTTON
+    ===================================================== */
+
+    document
+        .getElementById(
+            "cravooMenuCart"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+
+                if (
+                    typeof window.openCart ===
+                    "function"
+                ) {
+
+                    window.openCart();
+
+                }
+
+            }
+        );
+
+
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    function start() {
+
+
+        limitHomeFood();
+
+        wireRestaurants();
+
+        setupFilters();
+
+        updateCartCount();
+
+    }
+
+
+    if (
+        document.readyState ===
+        "loading"
+    ) {
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            start
+        );
+
+    } else {
+
+        start();
+
+    }
+
+
+})();
+
+</script>
+
+
+</body>
+</html>
