@@ -49,7 +49,7 @@ food-delivery/
 Follow these steps to run the project locally.
 
 1. Clone the Repository
-git clone https://github.com/your-username/food-delivery.git
+git clone https://github.com/ryzenousarko/Cravoo.git
 cd food-delivery
 
 2. Install Dependencies
@@ -208,7 +208,7 @@ This project is licensed under the MIT License.
 
 👨‍💻 Author
 
-Your Name
+Arkodeep Sharma
 
 GitHub: https://github.com/ryzenousarko
 Email: arkodeepsharma21@gmail.com
